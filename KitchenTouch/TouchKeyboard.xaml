@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="KitchenTouch.TouchKeyboard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Width="732" Height="294">
+    <Grid>
+		<StackPanel Name="cKeyboard" Background="SteelBlue" HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Vertical">
+			<StackPanel Margin="10">
+				<Border BorderBrush="Gray" BorderThickness="2" CornerRadius="4" Background="White">
+					<TextBox Name="lblTextEntryField" Margin="4" Background="White">[DEFAULT TEXT VALUE]</TextBox>
+				</Border>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<Button Name="btnTilda" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">~  `</Button>
+				<Button Name="btn1" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">!  1</Button>
+				<Button Name="btn2" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">@  2</Button>
+				<Button Name="btn3" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">#  3</Button>
+				<Button Name="btn4" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">$  4</Button>
+				<Button Name="btn5" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">%  5</Button>
+				<Button Name="btn6" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">^  6</Button>
+				<Button Name="btn7" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">&amp;  7</Button>
+				<Button Name="btn8" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">*  8</Button>
+				<Button Name="btn9" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">(  9</Button>
+				<Button Name="btn0" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">)  0</Button>
+				<Button Name="btnMinus" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">_  -</Button>
+				<Button Name="btnPlus" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">+  =</Button>
+				<Button Name="btnBackspace" Width="100" Height="40" Margin="4" Click="fnKbdBtn_Click">Backspace</Button>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<Button Name="btnQ" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">Q</Button>
+				<Button Name="btnW" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">W</Button>
+				<Button Name="btnE" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">E</Button>
+				<Button Name="btnR" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">R</Button>
+				<Button Name="btnT" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">T</Button>
+				<Button Name="btnY" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">Y</Button>
+				<Button Name="btnU" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">U</Button>
+				<Button Name="btnI" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">I</Button>
+				<Button Name="btnO" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">O</Button>
+				<Button Name="btnP" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">P</Button>
+				<Button Name="btnOBrace" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">{  [</Button>
+				<Button Name="btnCBrace" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">}  ]</Button>
+				<Button Name="btnPipe" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">|</Button>
+				<Button Name="btnCancel" Width="70" Height="40" Margin="4" Background="Tan" Click="fnKbdBtn_Click">Cancel</Button>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<Button Name="btnA" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">A</Button>
+				<Button Name="btnS" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">S</Button>
+				<Button Name="btnD" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">D</Button>
+				<Button Name="btnF" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">F</Button>
+				<Button Name="btnG" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">G</Button>
+				<Button Name="btnH" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">H</Button>
+				<Button Name="btnJ" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">J</Button>
+				<Button Name="btnK" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">K</Button>
+				<Button Name="btnL" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">L</Button>
+				<Button Name="btnColon" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">:  ;</Button>
+				<Button Name="btnQuote" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">'</Button>
+				<Button Name="btnEnter" Width="100" Height="40" Margin="4" Click="fnKbdBtn_Click">Enter</Button>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<Button Name="btnLShift" Width="80" Height="40" Margin="4" Background="WhiteSmoke" Click="fnKbdBtn_Click">Shift</Button>
+				<Button Name="btnZ" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">Z</Button>
+				<Button Name="btnX" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">X</Button>
+				<Button Name="btnC" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">C</Button>
+				<Button Name="btnV" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">V</Button>
+				<Button Name="btnB" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">B</Button>
+				<Button Name="btnN" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">N</Button>
+				<Button Name="btnM" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">M</Button>
+				<Button Name="btnLess" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">&lt;  ,</Button>
+				<Button Name="btnMore" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">&gt;  .</Button>
+				<Button Name="btnQuestion" Width="40" Height="40" Margin="4" Click="fnKbdBtn_Click">?  /</Button>
+				<Button Name="btnRShift" Width="80" Height="40" Margin="4" Background="WhiteSmoke" Click="fnKbdBtn_Click">Shift</Button>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<Button Name="btnSpace" Width="580" Height="40" Margin="4" Background="WhiteSmoke" Click="fnKbdBtn_Click">Space</Button>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</UserControl>
