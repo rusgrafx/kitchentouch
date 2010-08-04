@@ -14,16 +14,16 @@
 			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
 
-		<Label Margin="10,0,0,0" Name="lblCurrentDate" FontSize="24" FontFamily="Tahoma" Height="37.27" HorizontalAlignment="Left" Width="559.082">[TODAY'S DATE AND TIME]</Label>
-		<Label Margin="0,0,10,0" Name="lblWelcome" FontSize="16" FontFamily="Georgia, Tahoma" Height="28.18" HorizontalAlignment="Right" MouseDoubleClick="lblWelcome_MouseDoubleClick">Welcome to ULANOV's family home</Label>
+		<Label Margin="10,0,0,0" Name="lblCurrentDate" FontSize="24" FontFamily="Tahoma" FontWeight="Bold" Height="37.27" HorizontalAlignment="Left" Width="559.082">[TODAY'S DATE AND TIME]</Label>
+		<Label Margin="0,0,10,0" Name="lblWelcome" FontSize="16" FontFamily="Georgia, Tahoma" Height="28.18" HorizontalAlignment="Right" MouseDoubleClick="lblWelcome_MouseDoubleClick">Kitchen Touch v.1.0</Label>
 		
-		<Button Name="btnPlayerCtrl" Grid.RowSpan="2" Width="60" Height="60" Margin="0,40,10,0" HorizontalAlignment="Right" Click="btnPlayerCtrl_Click" VerticalAlignment="Top">
+		<Button Name="btnPlayerCtrl" Grid.RowSpan="2" Width="60" Height="60" Margin="0,40,10,0" HorizontalAlignment="Right" Click="btnMPlay_Click" VerticalAlignment="Top">
 			<Image Name="imgPlayerCtrl" Source="/KitchenTouch;component/Resources/playerplay.png" />
 		</Button>
 
 		<StatusBar Name="statusBar" Grid.Row="4" Height="30" VerticalAlignment="Bottom">
 			<StatusBarItem Name="statusBarMain">Ready</StatusBarItem>
-			<StatusBarItem Name="statusBarDebug" HorizontalAlignment="Right" HorizontalContentAlignment="Right">Debug messages disabled</StatusBarItem>
+			<StatusBarItem Name="statusBarDebug" HorizontalAlignment="Right" HorizontalContentAlignment="Right"></StatusBarItem>
 		</StatusBar>
 		
 		<TabControl Name="tabNavi" Grid.Row="1">
@@ -39,12 +39,13 @@
 						<StackPanel>
 							<Label Margin="5" FontWeight="Bold">Current Home Status</Label>
 							<Label Margin="5" FontWeight="Bold" FontSize="12">Lights:</Label>
-							<Label Name="lblStatusLights" Margin="10,0,0,0">All lights are off</Label>
+							<Label Name="lblStatusLights" Margin="10,0,0,0" IsEnabled="False" FontSize="12">All lights are off</Label>
 							<Label Margin="5" FontWeight="Bold" FontSize="12">Motion:</Label>
-							<Label Name="lblStatusMotion" Margin="10,0,0,0" IsEnabled="False">No motion detected</Label>
+							<Label Name="lblStatusMotion" Margin="10,0,0,0" IsEnabled="False" FontSize="12">No motion detected</Label>
 							<Label Margin="5" FontWeight="Bold" FontSize="12">Alerts:</Label>
-							<Label Name="lblStatusAlerts" Margin="10,0,0,0" IsEnabled="False">No recent alerts</Label>
-							<Label Name="lblStatusResolution" Margin="5" FontWeight="Bold" FontSize="12">Window size: ---x---</Label>
+							<Label Name="lblStatusAlerts" Margin="10,0,0,0" IsEnabled="False" FontSize="12">No recent alerts</Label>
+							<Label Margin="5" FontWeight="Bold" FontSize="12">Window size:</Label>
+							<Label Name="lblStatusResolution" Margin="10,0,0,0" FontSize="12">---x---</Label>
 						</StackPanel>
 						
 						<StackPanel Grid.Column="1" Margin="0" CanVerticallyScroll="False">
@@ -162,9 +163,20 @@
 							<Button Name="btnGoWeb1"	Margin="5" Height="60" Click="goWeb_Click"></Button>
 							<Button Name="btnGoWeb2"	Margin="5" Height="60" Click="goWeb_Click"></Button>
 							<Button Name="btnGoWeb3"	Margin="5" Height="60" Click="goWeb_Click"></Button>
-							<TextBox Name="txtUrl"		Margin="10,20,10,0" Height="30">http://ulanoff.com/</TextBox>
-							<Button Name="btnGoTo"		Margin="5" Height="40" Click="btnGoTo_Click">Go</Button>
-							<Button Name="goBack"		Margin="5" Height="40" Click="goBack_Click">Back</Button>
+							<StackPanel Orientation="Horizontal">
+								<TextBox Name="txtUrl"		Margin="5,0,0,0" Height="40" Width="95" FontSize="10" VerticalContentAlignment="Center">http://ulanoff.com/</TextBox>
+								<Button Name="btnGoTo"		Margin="5" Height="40" Width="40" Click="btnGoTo_Click">
+									<Image Source="/KitchenTouch;component/Resources/dots.png" />
+								</Button>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+								<Button Name="goBack"		Margin="5" Height="40" Width="64" Click="goBack_Click">
+									<Image Source="/KitchenTouch;component/Resources/playerprevious.png" Stretch="Fill" />
+								</Button>
+								<Button Name="goForward"	Margin="5" Height="40" Width="64" Click="goBack_Click">
+									<Image Source="/KitchenTouch;component/Resources/playernext.png" Stretch="Fill" />
+								</Button>
+							</StackPanel>
 							<Button Name="btnBRefresh"	Margin="5" Height="40" Click="btnBRefresh_Click">Refresh</Button>
 							<Button Name="btnBStop"		Margin="5" Height="40" Click="btnBStop_Click">Unload</Button>
 						</StackPanel>
@@ -173,51 +185,38 @@
 			</TabItem>
 			<TabItem Name="tabMusic" Header="Music" FontSize="16" MinWidth="80" MinHeight="60">
 				<TabPanel Name="tabPMusic" Loaded="tabPMusic_Loaded">
-					<Grid Margin="0" Height="587" Width="997">
+					<Grid Margin="0">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="551*" />
-							<ColumnDefinition Width="456" />
+							<ColumnDefinition />
+							<ColumnDefinition Width="420" />
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
-							<RowDefinition Height="342.313" />
-							<RowDefinition Height="174.687*" />
+							<RowDefinition />
 							<RowDefinition Height="70" />
 						</Grid.RowDefinitions>
 
-						<StackPanel Grid.RowSpan="2">
-							<TabControl Name="tabcM" TabStripPlacement="Bottom" Margin="5">
-								<TabItem Name="tabiMCurrent" Header="Now Playing" IsSelected="True">
+						<StackPanel Orientation="Vertical">
+							<TabControl Name="tabcM" TabStripPlacement="Bottom" Margin="5" Height="510" Width="560">
+								<TabItem Name="tabiMCurrent" Header="Now Playing" FontSize="24" IsSelected="True">
 									<TabPanel Name="tabpMCurrent" Loaded="tabpMCurrent_Loaded">
-										<Grid Name="gridMCurrent" Margin="0" >
-											<Grid.ColumnDefinitions>
-												<ColumnDefinition MinWidth="300" />
-											</Grid.ColumnDefinitions>
-											<Grid.RowDefinitions>
-												<RowDefinition MinHeight="300" />
-											</Grid.RowDefinitions>
-											<ListBox Name="lbPlayLists" Margin="2" Background="WhiteSmoke" SelectionChanged="lbPlayLists_SelectionChanged" />
-										</Grid>
+										<Border BorderThickness="0" BorderBrush="Gray" Margin="0">
+											<ListBox Name="lbPlayLists" Margin="0" FontSize="24" Background="WhiteSmoke" SelectionChanged="lbPlayLists_SelectionChanged" />
+										</Border>
 									</TabPanel>
 								</TabItem>
-								<TabItem Name="tabiMLib" Header="Library">
+								<TabItem Name="tabiMLib" Header="Library" FontSize="24">
 									<TabPanel Name="tabpMLib" Loaded="tabpMLib_Loaded">
-										<Grid Margin="0">
-											<Grid.ColumnDefinitions>
-												<ColumnDefinition MinWidth="300" />
-											</Grid.ColumnDefinitions>
-											<Grid.RowDefinitions>
-												<RowDefinition MinHeight="300" />
-											</Grid.RowDefinitions>
-											<ListBox Name="lbMLib" Margin="2" Background="WhiteSmoke">
+										<Border BorderThickness="0" BorderBrush="Gray" Margin="0">
+											<ListBox Name="lbMLib" Margin="0" FontSize="24" Background="WhiteSmoke">
 												<ListBoxItem>Library is under construction...</ListBoxItem>
 											</ListBox>
-										</Grid>
+										</Border>
 									</TabPanel>
 								</TabItem>
 							</TabControl>
 						</StackPanel>
 
-						<StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom">
+						<StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
 							<Button Name="btnMOpen" Width="60" Height="60" Margin="5" ToolTip="Select folder to play" Click="btnMOpen_Click">
 								<Image Source="/KitchenTouch;component/Resources/playereject.png" />
 							</Button>
@@ -227,25 +226,25 @@
 							<Button Name="btnMRadio3" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="Cornsilk" FontWeight="Bold"></Button>
 							<Button Name="btnMRadio4" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="Gainsboro" FontWeight="Bold"></Button>
 							<MediaElement Name="mediaElement" Height="60" Width="60" Margin="5" LoadedBehavior="Manual" UnloadedBehavior="Manual" Volume="1" />
+							<MediaElement Name="mediaElement2" Height="60" Width="60" Margin="5" LoadedBehavior="Manual" UnloadedBehavior="Manual" Volume="1" />
 						</StackPanel>
 
 						<StackPanel Grid.Column="1">
-							<Border Name="borderAlbumCover" Margin="10,5,10,0" CornerRadius="10" BorderBrush="Gray" BorderThickness="1">
-								<Image Name="imgAlbumCover" Width="200" Height="200" Margin="20" Stretch="Uniform" StretchDirection="Both" VerticalAlignment="Center" HorizontalAlignment="Center" />
+							<Border Name="borderAlbumCover" Width="360" Height="360" Margin="10,5,10,0" CornerRadius="10" BorderBrush="Gray" BorderThickness="2">
+								<Image Name="imgAlbumCover" Width="320" Height="320" Margin="20" Stretch="Uniform" StretchDirection="Both" VerticalAlignment="Center" HorizontalAlignment="Center" />
 							</Border>
-						</StackPanel>
-
-						<StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,0">
-							<Label Name="lblMArtist" FontSize="12">Artist:</Label>
-							<Label Name="lblMAlbum" FontSize="12">Album:</Label>
-							<Label Name="lblMFile" FontSize="12">File:</Label>
-							<StackPanel Orientation="Horizontal">
-								<ProgressBar Name="pbarMPosition" Width="260"></ProgressBar>
-								<Label Name="lblMPosition" Margin="10,0,0,0" FontSize="10">--:-- / --:--</Label>
+							<StackPanel Grid.Column="1" Margin="10,20,0,0">
+								<Label Name="lblMArtist" FontSize="12">Artist:</Label>
+								<Label Name="lblMAlbum" FontSize="12">Album:</Label>
+								<Label Name="lblMFile" FontSize="12">Song:</Label>
+								<StackPanel Orientation="Horizontal">
+									<ProgressBar Name="pbarMPosition" Width="260"></ProgressBar>
+									<Label Name="lblMPosition" Margin="10,0,0,0" FontSize="10">--:-- / --:--</Label>
+								</StackPanel>
 							</StackPanel>
 						</StackPanel>
 						
-						<StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+						<StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
 							<Button Name="btnMVolDn" Width="60" Height="60" Margin="5" ToolTip="Volume Down" Click="btnMVolDn_Click">
 								<Image Source="/KitchenTouch;component/Resources/minus.png" />
 							</Button>
@@ -255,16 +254,19 @@
 							<Button Name="btnMPrev"  Width="60" Height="60" Margin="5" ToolTip="Previous Song" Click="btnMPrev_Click">
 								<Image Source="/KitchenTouch;component/Resources/playerprevious.png" />
 							</Button>
-							<Button Name="btnMPlay"  Width="60" Height="60" Margin="5" ToolTip="Play" Click="btnMPlay_Click">
-								<Image Source="/KitchenTouch;component/Resources/playerplay.png" />
+							<Button Name="btnMPlay"  Width="120" Height="60" Margin="5" ToolTip="Play" Click="btnMPlay_Click">
+								<Image Name="imgMPlay" Source="/KitchenTouch;component/Resources/playerplay.png" Stretch="Fill" />
 							</Button>
+							<!--
 							<Button Name="btnMStop"  Width="60" Height="60" Margin="5" ToolTip="Pause" Click="btnMStop_Click">
 								<Image Source="/KitchenTouch;component/Resources/playerstop.png" />
 							</Button>
+							-->
 							<Button Name="btnMNext"  Width="60" Height="60" Margin="5" ToolTip="Next Song" Click="btnMNext_Click">
 								<Image Source="/KitchenTouch;component/Resources/playernext.png" />
 							</Button>
 						</StackPanel>
+
 					</Grid>
 				</TabPanel>
 			</TabItem>
@@ -284,7 +286,7 @@
 											<Button Name="btnSetFullscreen" Margin="5" Click="fnSetWindowSize">Maximize</Button>
 										</StackPanel>
 										<CheckBox Name="chkTouchKbd" Margin="10" Checked="chkTouchKbd_Set" Unchecked="chkTouchKbd_Set"> Enable Virtual Keyboard</CheckBox>
-										<CheckBox Name="cbEnableDebug" Margin="10" Click="cbEnableDebug_Click"> Enable Debug</CheckBox>
+										<CheckBox Name="cbEnableDebug" Margin="10" Click="cbEnableDebug_Click"> Enable Debug Messages</CheckBox>
 									</StackPanel>
 								</GroupBox>
 								<GroupBox Header="Weather" Margin="0,20,0,0">
