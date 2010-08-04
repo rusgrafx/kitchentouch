@@ -1,4 +1,25 @@
-﻿using System;
+﻿/* 
+ *  Project     : KitchenTouch
+ *  Source      : http://kitchentouch.codeplex.com/
+ *  Author      : Ruslan Ulanov
+ *  Description : KitchenTouch - home automation GUI for 
+ *                touch-capable devices.
+ * 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +56,15 @@ namespace KitchenTouch
         private string strPlayBtnUrl = "pack://application:,,,/Resources/playerplay.png";
         private string strStopBtnUrl = "pack://application:,,,/Resources/playerstop.png";
         private string strRadioAlbumArt = "pack://application:,,,/Resources/kajol.jpg";
+		// internet browser
+		string iBrowser_CurrentURL;
+		System.Windows.Controls.TextBox tbCurrent;
+		// background color for Album Art
+		private const double COLOR_VARIATION = 10;
+		private double R = 100;
+		private double G = 80;
+		private double B = 100;
+		#endregion
 
 		#region * USER CONFIG *
 		// Config values to save off to XML
@@ -141,24 +171,12 @@ namespace KitchenTouch
 
 		#endregion
 
-        // background color for Album Art
-        private const double COLOR_VAR = 3;
-        private double R = 180;
-        private double G = 100;
-        private double B = 0;
-
-        // internet browser
-        string iBrowser_CurrentURL;
-		System.Windows.Controls.TextBox tbCurrent;
-		
-        #endregion
-
         #region * Init *
         protected DispatcherTimer ClockTimer;
         protected DispatcherTimer SlideShowTimer;
         protected DispatcherTimer PlayerTimer;
 		protected DispatcherTimer WebCamTimer;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        //private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
 
         private int iCurrentSlide = 0;
         private string[] jpgFiles = new string[0];
@@ -166,7 +184,8 @@ namespace KitchenTouch
 
         private int iCurrentMP3 = 0;
         private string[] mp3Files = new string[0];
-        private bool bMusicPlaying = false;
+		private bool bMusicPlaying = false;
+		private bool bRadioPlaying = false;
 
         public KTMainWindow()
         {
@@ -668,12 +687,14 @@ namespace KitchenTouch
         {
             iBrowser_CurrentURL = iBrowser.Source.ToString();
             fnBrowserNavigate("about:blank");
+			fnStatusWrite("");
         }
 
 		private void btnBStop_Click(object sender, RoutedEventArgs e)
 		{
 			//TODO: Implement real stop function
 			fnBrowserNavigate("about:blank");
+			fnStatusWrite("");
 		}
 
 		private void btnBRefresh_Click(object sender, RoutedEventArgs e)
@@ -744,10 +765,10 @@ namespace KitchenTouch
         {
 			try
 			{
-				btnMVolDn.Visibility = this.Width >= 1024 ? Visibility.Visible : Visibility.Collapsed;
-				btnMVolUp.Visibility = this.Width >= 1024 ? Visibility.Visible : Visibility.Collapsed;
+				btnMVolDn.Visibility = this.Width >= 1023 ? Visibility.Visible : Visibility.Collapsed;
+				btnMVolUp.Visibility = this.Width >= 1023 ? Visibility.Visible : Visibility.Collapsed;
 				fnGetMusic(false);
-				CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
+				//CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
 			}
 			catch
 			{
@@ -758,14 +779,14 @@ namespace KitchenTouch
         {
             fnPlayerUpdateInfo();
         }
-		
+
 		private void lbPlayLists_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			try
 			{
-				int si = lbPlayLists.SelectedIndex;
 				fnMusicStop();
-				iCurrentMP3 = si;
+				iCurrentMP3 = lbPlayLists.SelectedIndex;
+				fnMusicLoad();
 				fnMusicPlay();
 				fnDebugWrite("Selected index: " + lbPlayLists.SelectedIndex);
 			}
@@ -807,9 +828,9 @@ namespace KitchenTouch
                     iCurrentMP3 = 0;
                     mp3Files = System.IO.Directory.GetFiles(strMusicDir, @"*.mp3");
                     this.lbPlayLists.Items.Clear();
-                    foreach (string f in mp3Files)
+                    foreach (string p in mp3Files)
                     {
-                        this.lbPlayLists.Items.Add(f);
+						this.lbPlayLists.Items.Add(System.IO.Path.GetFileNameWithoutExtension(p));
                     }
                     fnUpdateAlbumCover();
                 }
@@ -861,10 +882,9 @@ namespace KitchenTouch
 						mediaElement.Source = new Uri(mp3file, UriKind.RelativeOrAbsolute);
 						mediaElement.ToolTip = mp3file;
 						fnStatusWrite(mp3file);
-						lblMFile.Content = "File: " + mp3file;
+						lblMFile.Content = "Song: " + System.IO.Path.GetFileNameWithoutExtension(mp3file);
 						mediaElement.Position = new TimeSpan();
-						mediaElement.Play();
-						bMusicPlaying = true;
+//						fnMusicPlay();
 					}
 					else
 					{
@@ -873,7 +893,7 @@ namespace KitchenTouch
 				}
 				else
 				{
-					mediaElement.Play();
+//					fnMusicPlay();
 				}
 			}
 			catch (Exception e)
@@ -884,8 +904,18 @@ namespace KitchenTouch
 
         public void fnMusicPlay()
         {
+			if (bRadioPlaying)
+			{
+				mediaElement2.Stop();
+			}
+
+			if (mediaElement.Source == null)
+			{
+				fnMusicLoad();
+			}
 			mediaElement.Play();
 			bMusicPlaying = true;
+			fnPlayerCtrlPlay();
         }
 
 		public void fnMusicPrev()
@@ -919,8 +949,17 @@ namespace KitchenTouch
         {
 			try
 			{
-				mediaElement.Pause();
-				bMusicPlaying = false;
+				if (bMusicPlaying)
+				{
+					mediaElement.Pause();
+					bMusicPlaying = false;
+				}
+				if (bRadioPlaying)
+				{
+					mediaElement2.Pause();
+					bRadioPlaying = false;
+				}
+				fnPlayerCtrlPause();
 			}
 			catch
 			{
@@ -931,8 +970,17 @@ namespace KitchenTouch
         {
 			try
 			{
-				mediaElement.Stop();
-				bMusicPlaying = false;
+				if (bMusicPlaying)
+				{
+					mediaElement.Stop();
+					bMusicPlaying = false;
+				}
+				if (bRadioPlaying)
+				{
+					mediaElement2.Stop();
+					bRadioPlaying = false;
+				}
+				fnPlayerCtrlPause();
 			}
 			catch
 			{
@@ -959,7 +1007,8 @@ namespace KitchenTouch
         {
 			try
 			{
-				imgPlayerCtrl.Source = GetImage(strStopBtnUrl);
+				imgMPlay.Source = imgPlayerCtrl.Source = GetImage(strStopBtnUrl);
+				CompositionTarget.Rendering -= new EventHandler(CompositionTarget_Rendering);
 			}
 			catch
 			{
@@ -970,7 +1019,8 @@ namespace KitchenTouch
         {
 			try
 			{
-				imgPlayerCtrl.Source = GetImage(strPlayBtnUrl);
+				imgMPlay.Source = imgPlayerCtrl.Source = GetImage(strPlayBtnUrl);
+				CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
 			}
 			catch
 			{
@@ -1000,9 +1050,9 @@ namespace KitchenTouch
 					int seed = (int)DateTime.Now.Ticks;
 					Random r = new Random(seed);
 
-					R += (COLOR_VAR / 2 - r.NextDouble() * COLOR_VAR);
-					G += (COLOR_VAR / 2 - r.NextDouble() * COLOR_VAR);
-					B += (COLOR_VAR / 2 - r.NextDouble() * COLOR_VAR);
+					R += (COLOR_VARIATION / 2 - r.NextDouble() * COLOR_VARIATION);
+					G += (COLOR_VARIATION / 2 - r.NextDouble() * COLOR_VARIATION);
+					B += (COLOR_VARIATION / 2 - r.NextDouble() * COLOR_VARIATION);
 
 					R = Math.Max(0, Math.Min(R, 255));
 					G = Math.Max(0, Math.Min(G, 255));
@@ -1022,18 +1072,18 @@ namespace KitchenTouch
             {
                 fnMusicStop();
                 //mp3Files = new string[0];
-                mediaElement.Source = new Uri(url, UriKind.Absolute);
-                mediaElement.ToolTip = lblMFile.Content = "Internet Radio: " + title;
+                mediaElement2.Source = new Uri(url, UriKind.Absolute);
+                mediaElement2.ToolTip = lblMFile.Content = "Internet Radio: " + title;
                 fnStatusWrite("Internet Radio: " + title);
-                fnDebugWrite("Playing Internet stream");
-                mediaElement.Position = new TimeSpan();
-                this.lblMPosition.Content = "--:-- / --:--";
+                fnDebugWrite("Playing Internet stream ["+url+"]");
+                mediaElement2.Position = new TimeSpan();
+                //this.lblMPosition.Content = "--:-- / --:--";
                 this.imgAlbumCover.Source = GetImage(strRadioAlbumArt);
                 //this.lbPlayLists.Items.Clear();
                 //this.lbPlayLists.Items.Add(title);
-                //mediaElement.NaturalDuration = 
-                mediaElement.Play();
-                bMusicPlaying = true;
+                mediaElement2.Play();
+				bRadioPlaying = true;
+                //bMusicPlaying = true;
                 fnPlayerCtrlPlay();
             }
             catch (Exception ex)
@@ -1077,52 +1127,41 @@ namespace KitchenTouch
         {
             try
             {
-                fnMusicPlay();
-                fnPlayerCtrlPlay();
-                //fnMusicNext();
-                //mediaElement.MediaEnded += new RoutedEventHandler(btnMPlay_Click);
+				if (bMusicPlaying || bRadioPlaying)
+				{
+					fnMusicPause();
+				}
+				else
+				{
+					fnMusicPlay();
+					//mediaElement.MediaEnded += new RoutedEventHandler(btnMPlay_Click);
+				}
             }
             catch (Exception ex)
             {
                 fnDebugWrite("Error in btnMPlay_Click: " + ex.Message);
             }
         }
-
+/*
         private void btnMStop_Click(object sender, RoutedEventArgs e)
         {
             fnMusicPause();
-            fnPlayerCtrlPause();
         }
-
+*/
         private void btnMNext_Click(object sender, RoutedEventArgs e)
         {
             fnMusicStop();
             fnMusicNext();
+			fnMusicLoad();
             fnMusicPlay();
-            fnPlayerCtrlPlay();
         }
 
         private void btnMPrev_Click(object sender, RoutedEventArgs e)
         {
             fnMusicStop();
             fnMusicPrev();
+			fnMusicLoad();
             fnMusicPlay();
-            fnPlayerCtrlPlay();
-        }
-
-        private void btnPlayerCtrl_Click(object sender, RoutedEventArgs e)
-        {
-            //if ((string)btnPlayerCtrl.Content == PAUSE_LABEL)
-            if (bMusicPlaying)
-            {
-                fnPlayerCtrlPause();
-                fnMusicPause();
-            }
-            else
-            {
-                fnPlayerCtrlPlay();
-                fnMusicPlay();
-            }
         }
 
         private void btnMVolUp_Click(object sender, RoutedEventArgs e)
@@ -1153,27 +1192,21 @@ namespace KitchenTouch
 
         private void btnMOpen_Click(object sender, RoutedEventArgs e)
         {
+			//System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
 			try
 			{
-				if (folderBrowserDialog == null)
-				{
-					this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-					//this.SuspendLayout();
-					this.folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyMusic;
-					this.folderBrowserDialog.ShowNewFolderButton = false;
-					this.folderBrowserDialog.Description = "Please select folder.";
-					//this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-					//this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-					//this.ClientSize = new System.Drawing.Size(292, 266);
-					//this.ResumeLayout(false);
-				}
+				System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+				folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyMusic;
+				folderBrowserDialog.ShowNewFolderButton = false;
+				folderBrowserDialog.Description = "Please select folder.";
+				
 				DialogResult dr = folderBrowserDialog.ShowDialog();
 				if (dr == System.Windows.Forms.DialogResult.OK)
 				{
-					string foldername = this.folderBrowserDialog.SelectedPath;
+					string foldername = folderBrowserDialog.SelectedPath;
 					strMusicDir = foldername;
-					fnGetMusic(true);
 					fnMusicStop();
+					fnGetMusic(true);
 					fnMusicPlay();
 				}
 			}
@@ -1573,7 +1606,9 @@ namespace KitchenTouch
 				if (bEnableTouchKeyboard)
 				{
 					System.Windows.Controls.TextBox tb = (System.Windows.Controls.TextBox)e.OriginalSource;
-
+					
+					if (tb == tbCurrent) return; //temp fix for "Enter key press on the keyboard shows keyboard again if text has changed"
+					
 					//Ignore TextBox in the virtual keyboard
 					string tbN = tb.Name.ToString();
 					if (tbN == "lblTextEntryField" ||
@@ -1584,7 +1619,8 @@ namespace KitchenTouch
 					{
 						fnDebugWrite("Showing keyboard for [" + tb.Name + "] text box.");
 						TouchKeyboard cTouchKeyboard = new TouchKeyboard(tbCurrent.Text);
-						cTouchKeyboard.TouchKeyboard_Show();
+						cTouchKeyboard.ShowDialog();
+						tbCurrent.Text = cTouchKeyboard.ResultText;
 					}
 				}
 			}
@@ -1593,6 +1629,5 @@ namespace KitchenTouch
 			}
 		}
 		#endregion
-
 	}
 }
