@@ -204,6 +204,27 @@
   <ItemGroup>
     <Resource Include="WLHome.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cancel.png" />
+    <Resource Include="Resources\folder2.png" />
+    <Resource Include="Resources\gear.png" />
+    <Resource Include="Resources\soundminus.png" />
+    <Resource Include="Resources\soundplus.png" />
+    <Resource Include="Resources\standby.png" />
+    <Resource Include="Resources\start.png" />
+    <Resource Include="Resources\weathercouldsun.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\playerfastfwd.png" />
+    <Resource Include="Resources\playerfastrev.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow1left.png" />
+    <Resource Include="Resources\arrow1right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\refresh.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

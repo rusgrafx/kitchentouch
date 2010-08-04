@@ -86,9 +86,11 @@ namespace KitchenTouch
 				switch (btn.Name)
 				{
 					case "btnEnter":
+						this.DialogResult = true;
 						this.Close();
 						break;
 					case "btnCancel":
+						this.DialogResult = false;
 						this.ResultText = _OriginalValue;
 						this.Close();
 						break;

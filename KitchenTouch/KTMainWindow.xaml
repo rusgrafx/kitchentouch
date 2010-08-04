@@ -2,7 +2,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	Title="Welcome to Ulanov's Home" 
-	ResizeMode="CanResize" WindowStyle="SingleBorderWindow"
+	ResizeMode="CanResize" WindowStyle="None"
 	MinWidth="800" MinHeight="600" Width="1024" Height="768" Left="0" Top="0"
 	Topmost="False" SnapsToDevicePixels="True" Visibility="Visible"
 	TextBoxBase.SelectionChanged="fnTextEntryHandler" SizeChanged="Window_SizeChanged" WindowState="Maximized">
@@ -14,7 +14,7 @@
 			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
 
-		<Label Margin="10,0,0,0" Name="lblCurrentDate" FontSize="24" FontFamily="Tahoma" FontWeight="Bold" Height="37.27" HorizontalAlignment="Left" Width="559.082">[TODAY'S DATE AND TIME]</Label>
+		<Label Margin="10,0,200,0" Name="lblCurrentDate" FontSize="24" FontFamily="Tahoma" FontWeight="Bold">[TODAY'S DATE AND TIME]</Label>
 		<Label Margin="0,0,10,0" Name="lblWelcome" FontSize="16" FontFamily="Georgia, Tahoma" Height="28.18" HorizontalAlignment="Right" MouseDoubleClick="lblWelcome_MouseDoubleClick">Kitchen Touch v.1.0</Label>
 		
 		<Button Name="btnPlayerCtrl" Grid.RowSpan="2" Width="60" Height="60" Margin="0,40,10,0" HorizontalAlignment="Right" Click="btnMPlay_Click" VerticalAlignment="Top">
@@ -165,20 +165,26 @@
 							<Button Name="btnGoWeb3"	Margin="5" Height="60" Click="goWeb_Click"></Button>
 							<StackPanel Orientation="Horizontal">
 								<TextBox Name="txtUrl"		Margin="5,0,0,0" Height="40" Width="95" FontSize="10" VerticalContentAlignment="Center">http://ulanoff.com/</TextBox>
-								<Button Name="btnGoTo"		Margin="5" Height="40" Width="40" Click="btnGoTo_Click">
-									<Image Source="/KitchenTouch;component/Resources/dots.png" />
+								<Button Name="btnGoTo"		Margin="5" Height="40" Width="40" Click="btnGoTo_Click" ToolTip="Go">
+									<Image Source="/KitchenTouch;component/Resources/start.png" />
 								</Button>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-								<Button Name="goBack"		Margin="5" Height="40" Width="64" Click="goBack_Click">
-									<Image Source="/KitchenTouch;component/Resources/playerprevious.png" Stretch="Fill" />
+								<Button Name="goBack"		Margin="5" Height="64" Width="64" Click="goBack_Click" ToolTip="Back">
+									<Image Source="/KitchenTouch;component/Resources/arrow1left.png" Stretch="Fill" />
 								</Button>
-								<Button Name="goForward"	Margin="5" Height="40" Width="64" Click="goBack_Click">
-									<Image Source="/KitchenTouch;component/Resources/playernext.png" Stretch="Fill" />
+								<Button Name="goForward"	Margin="5" Height="64" Width="64" Click="goBack_Click" ToolTip="Forward">
+									<Image Source="/KitchenTouch;component/Resources/arrow1right.png" Stretch="Fill" />
 								</Button>
 							</StackPanel>
-							<Button Name="btnBRefresh"	Margin="5" Height="40" Click="btnBRefresh_Click">Refresh</Button>
-							<Button Name="btnBStop"		Margin="5" Height="40" Click="btnBStop_Click">Unload</Button>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+								<Button Name="btnBRefresh"	Margin="5" Height="64" Width="64" Click="btnBRefresh_Click" ToolTip="Refresh">
+									<Image Source="/KitchenTouch;component/Resources/refresh.png" Stretch="Fill" />
+								</Button>
+								<Button Name="btnBStop"		Margin="5" Height="64" Width="64" Click="btnBStop_Click" ToolTip="Unload">
+									<Image Source="/KitchenTouch;component/Resources/cancel.png" Stretch="Fill" />
+								</Button>
+							</StackPanel>
 						</StackPanel>
 					</Grid>
 				</TabPanel>
@@ -218,7 +224,7 @@
 
 						<StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
 							<Button Name="btnMOpen" Width="60" Height="60" Margin="5" ToolTip="Select folder to play" Click="btnMOpen_Click">
-								<Image Source="/KitchenTouch;component/Resources/playereject.png" />
+								<Image Source="/KitchenTouch;component/Resources/folder2.png" />
 							</Button>
 
 							<Button Name="btnMRadio1" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="Beige" FontWeight="Bold"></Button>
@@ -246,24 +252,22 @@
 						
 						<StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
 							<Button Name="btnMVolDn" Width="60" Height="60" Margin="5" ToolTip="Volume Down" Click="btnMVolDn_Click">
-								<Image Source="/KitchenTouch;component/Resources/minus.png" />
+								<Image Source="/KitchenTouch;component/Resources/soundminus.png" />
 							</Button>
 							<Button Name="btnMVolUp" Width="60" Height="60" Margin="5" ToolTip="Volume Up" Click="btnMVolUp_Click">
-								<Image Source="/KitchenTouch;component/Resources/plus.png" />
+								<Image Source="/KitchenTouch;component/Resources/soundplus.png" />
 							</Button>
 							<Button Name="btnMPrev"  Width="60" Height="60" Margin="5" ToolTip="Previous Song" Click="btnMPrev_Click">
-								<Image Source="/KitchenTouch;component/Resources/playerprevious.png" />
+								<Image Source="/KitchenTouch;component/Resources/playerfastrev.png" />
 							</Button>
-							<Button Name="btnMPlay"  Width="120" Height="60" Margin="5" ToolTip="Play" Click="btnMPlay_Click">
-								<Image Name="imgMPlay" Source="/KitchenTouch;component/Resources/playerplay.png" Stretch="Fill" />
-							</Button>
-							<!--
-							<Button Name="btnMStop"  Width="60" Height="60" Margin="5" ToolTip="Pause" Click="btnMStop_Click">
+							<Button Name="btnMStop"  Width="60" Height="60" Margin="5" ToolTip="Stop" Click="btnMStop_Click">
 								<Image Source="/KitchenTouch;component/Resources/playerstop.png" />
 							</Button>
-							-->
+							<Button Name="btnMPlay"  Width="60" Height="60" Margin="5" ToolTip="Play" Click="btnMPlay_Click">
+								<Image Name="imgMPlay" Source="/KitchenTouch;component/Resources/playerplay.png" Stretch="Fill" />
+							</Button>
 							<Button Name="btnMNext"  Width="60" Height="60" Margin="5" ToolTip="Next Song" Click="btnMNext_Click">
-								<Image Source="/KitchenTouch;component/Resources/playernext.png" />
+								<Image Source="/KitchenTouch;component/Resources/playerfastfwd.png" />
 							</Button>
 						</StackPanel>
 
@@ -275,8 +279,7 @@
 					<Grid Margin="0">
 						<ScrollViewer Name="svSettings" HorizontalAlignment="Left" MinWidth="800" VerticalScrollBarVisibility="Auto">
 							<StackPanel HorizontalAlignment="Left" Margin="5" CanVerticallyScroll="True">
-								<Button Click="SaveConfig_Click" Margin="0,20,0,0">Save settings</Button>
-								<GroupBox Header="Generic" Margin="0,20,0,0">
+								<GroupBox Header="Generic (not saved)" Margin="0,20,0,0">
 									<StackPanel>
 										<StackPanel Orientation="Horizontal" Margin="5">
 											<Label>Set window size: </Label>
@@ -289,6 +292,7 @@
 										<CheckBox Name="cbEnableDebug" Margin="10" Click="cbEnableDebug_Click"> Enable Debug Messages</CheckBox>
 									</StackPanel>
 								</GroupBox>
+								<Button Click="SaveConfig_Click" Margin="0,20,0,0">Save settings</Button>
 								<GroupBox Header="Weather" Margin="0,20,0,0">
 									<StackPanel>
 										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
@@ -340,13 +344,19 @@
 										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 											<Label Width="200" Margin="5">Default SlideShow folder:</Label>
 											<TextBox Name="tbDefaultPictureDir" MinWidth="300" Margin="5"></TextBox>
-											<Button Width="60" Height="30" Margin="5">Select</Button>
+											<Button Width="32" Height="32" Margin="5" ToolTip="Select folder">
+												<Image Source="/KitchenTouch;component/Resources/folder2.png" />
+											</Button>
 										</StackPanel>
 										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 											<Label Width="200" Margin="5">SlideShow speed:</Label>
-											<Button Name="btnSlideShowDelayLess" Width="30" Margin="0,5,0,5" Click="btnSlideShowDelayLess_Click">-</Button>
+											<Button Name="btnSlideShowDelayLess" Width="30" Margin="0,5,0,5" Click="btnSlideShowDelayLess_Click">
+												<Image Source="/KitchenTouch;component/Resources/minus.png" />
+											</Button>
 											<TextBox Name="tbSlideShowDelay" Margin="5" Width="30"></TextBox>
-											<Button Name="btnSlideShowDelayMore" Width="30" Margin="0,5,5,5" Click="btnSlideShowDelayMore_Click">+</Button>
+											<Button Name="btnSlideShowDelayMore" Width="30" Margin="0,5,5,5" Click="btnSlideShowDelayMore_Click">
+												<Image Source="/KitchenTouch;component/Resources/plus.png" />
+											</Button>
 											<Label Margin="5">seconds (0-60)</Label>
 										</StackPanel>
 									</StackPanel>
@@ -357,7 +367,9 @@
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 												<Label Margin="5" Width="200">Default Music folder:</Label>
 												<TextBox Name="tbDefaultMusicDir" MinWidth="300" Margin="5"></TextBox>
-												<Button Width="60" Height="30" Margin="5">Select</Button>
+												<Button Width="32" Height="32" Margin="5" ToolTip="Select folder">
+													<Image Source="/KitchenTouch;component/Resources/folder2.png" />
+												</Button>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 												<Label Margin="5" Width="150">Radio #1 Title:</Label>
