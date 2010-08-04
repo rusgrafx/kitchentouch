@@ -1,7 +1,8 @@
-﻿<UserControl x:Class="KitchenTouch.TouchKeyboard"
+﻿<Window x:Class="KitchenTouch.TouchKeyboard"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Width="732" Height="294">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	WindowStyle="None" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Topmost="True" ShowInTaskbar="False" 
+	Name="TK" Title="Touch Keyboard" WindowStartupLocation="CenterScreen">
     <Grid>
 		<StackPanel Name="cKeyboard" Background="SteelBlue" HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Vertical">
 			<StackPanel Margin="10">
@@ -74,4 +75,4 @@
 			</StackPanel>
 		</StackPanel>
 	</Grid>
-</UserControl>
+</Window>

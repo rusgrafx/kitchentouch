@@ -1,67 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/* 
+ *  Project     : KitchenTouch::TouchKeyboard
+ *  Source      : http://kitchentouch.codeplex.com/
+ *  Author      : Ruslan Ulanov
+ *  Description : As part of the KitchenTouch project this component 
+ *                provides touch-based input for TextBox fields.
+ * 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace KitchenTouch
 {
 	/// <summary>
 	/// Interaction logic for TouchKeyboard.xaml
 	/// </summary>
-	public partial class TouchKeyboard : UserControl
+	public partial class TouchKeyboard
 	{
 		private bool bShiftPressed = false;
+		private SolidColorBrush colorBtnDefault  = new SolidColorBrush(Color.FromArgb(255, (byte)245, (byte)245, (byte)245));
 		private SolidColorBrush colorBtnSelected = new SolidColorBrush(Color.FromArgb(255, (byte)106, (byte)90, (byte)205));
-		private SolidColorBrush colorBtnDefault = new SolidColorBrush(Color.FromArgb(255, (byte)245, (byte)245, (byte)245));
-		private string txtCurrentValue = "";
+		private string _OriginalValue = "";
+		private string _CurrentValue = "";
 
 		public TouchKeyboard()
 		{
 			InitializeComponent();
-			this.TouchKeyboard_SetText("");
+			ResultText = "";
 		}
 
 		public TouchKeyboard(string txt)
 		{
 			InitializeComponent();
-			this.TouchKeyboard_SetText(txt);
-		}
-		
-		public void TouchKeyboard_SetText(string txt) 
-		{
-			this.txtCurrentValue = txt;
-			this.lblTextEntryField.Text = this.txtCurrentValue;
+			_OriginalValue = ResultText = txt;
 		}
 
-		public string TouchKeyboard_GetText() 
+		public string ResultText
 		{
-			return this.txtCurrentValue;
+			get { 
+				return _CurrentValue; 
+			}
+			private set {
+				this.lblTextEntryField.Text = this._CurrentValue = value; 
+			}
 		}
 
-		public void TouchKeyboard_Show()
+		/*
+		 public void TouchKeyboard_Close()
 		{
-			this.Visibility = Visibility.Visible;
+			this.Close();
 		}
-		
-		public void TouchKeyboard_Hide()
-		{
-			this.Visibility = Visibility.Collapsed;
-		}
+		 */
 
-		public void TouchKeyboard_Destroy()
-		{
-			//this.Close();
-		}
-		
 		private void fnKbdToggleShift()
 		{
 			try
@@ -80,17 +82,19 @@ namespace KitchenTouch
 			{
 				System.Windows.Controls.Button btn = (System.Windows.Controls.Button)e.OriginalSource;
 				//fnDebugWrite("Button [" + btn.Name + "] clicked");
+				string txt = ResultText;
 				switch (btn.Name)
 				{
 					case "btnEnter":
-						this.TouchKeyboard_SetText(lblTextEntryField.Text);
-						this.TouchKeyboard_Hide();
+						this.Close();
 						break;
 					case "btnCancel":
-						this.TouchKeyboard_Hide();
+						this.ResultText = _OriginalValue;
+						this.Close();
 						break;
 					case "btnBackspace":
-						this.lblTextEntryField.Text = this.lblTextEntryField.Text.Substring(0, this.lblTextEntryField.Text.Length - 1);
+						txt = txt.Substring(0, txt.Length - 1);
+						this.ResultText = txt;
 						break;
 					case "btnLShift":
 						this.fnKbdToggleShift();
@@ -99,96 +103,119 @@ namespace KitchenTouch
 						this.fnKbdToggleShift();
 						break;
 					case "btnTilda":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "~" : "`";
+						txt += this.bShiftPressed ? "~" : "`";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn1":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "!" : "1";
+						txt += this.bShiftPressed ? "!" : "1";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn2":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "@" : "2";
+						txt += this.bShiftPressed ? "@" : "2";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn3":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "#" : "3";
+						txt += this.bShiftPressed ? "#" : "3";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn4":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "$" : "4";
+						txt += this.bShiftPressed ? "$" : "4";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn5":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "%" : "5";
+						txt += this.bShiftPressed ? "%" : "5";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn6":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "^" : "6";
+						txt += this.bShiftPressed ? "^" : "6";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn7":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "&" : "7";
+						txt += this.bShiftPressed ? "&" : "7";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn8":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "*" : "8";
+						txt += this.bShiftPressed ? "*" : "8";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn9":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "(" : "9";
+						txt += this.bShiftPressed ? "(" : "9";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btn0":
-						this.lblTextEntryField.Text += this.bShiftPressed ? ")" : "0";
+						txt += this.bShiftPressed ? ")" : "0";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnMinus":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "_" : "-";
+						txt += this.bShiftPressed ? "_" : "-";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnPlus":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "+" : "=";
+						txt += this.bShiftPressed ? "+" : "=";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnOBrace":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "{" : "[";
+						txt += this.bShiftPressed ? "{" : "[";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnCBrace":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "}" : "]";
+						txt += this.bShiftPressed ? "}" : "]";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnPipe":
-						this.lblTextEntryField.Text += "|";
+						txt += "|";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnColon":
-						this.lblTextEntryField.Text += this.bShiftPressed ? ":" : ";";
+						txt += this.bShiftPressed ? ":" : ";";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnQuote":
-						this.lblTextEntryField.Text += "'";
+						txt += "'";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnLess":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "<" : ",";
+						txt += this.bShiftPressed ? "<" : ",";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnMore":
-						this.lblTextEntryField.Text += this.bShiftPressed ? ">" : ".";
+						txt += this.bShiftPressed ? ">" : ".";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnQuestion":
-						this.lblTextEntryField.Text += this.bShiftPressed ? "?" : "/";
+						txt += this.bShiftPressed ? "?" : "/";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					case "btnSpace":
-						this.lblTextEntryField.Text += " ";
+						txt += " ";
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 					default:
 						string str = (string)btn.Content;
-						this.lblTextEntryField.Text += (this.bShiftPressed ? str.ToUpper() : str.ToLower());
+						txt += (this.bShiftPressed ? str.ToUpper() : str.ToLower());
+						this.ResultText = txt;
 						if (this.bShiftPressed) this.fnKbdToggleShift();
 						break;
 				}
@@ -198,5 +225,14 @@ namespace KitchenTouch
 				//fnDebugWrite("Error in fnKbdBtn_Click: " + ex.Message);
 			}
 		}
+		/*
+		private void TK_ContentRendered(object sender, System.EventArgs e)
+		{
+			int iKbdWidth = 732; 
+			int iKbdHeight = 294;
+			this.Top = (System.Windows.Forms.SystemInformation.WorkingArea.Height - iKbdHeight);
+			//this.Left = (System.Windows.Forms.SystemInformation.WorkingArea.Width - (iKbdWidth / 2 ));
+		}
+		*/
 	}
 }
