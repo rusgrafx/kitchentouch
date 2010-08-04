@@ -55,6 +55,7 @@ namespace KitchenTouch
 		private string strConfigFile = "KitchenTouch.xml";
         private string strPlayBtnUrl = "pack://application:,,,/Resources/playerplay.png";
         private string strStopBtnUrl = "pack://application:,,,/Resources/playerstop.png";
+		private string strPauseBtnUrl = "pack://application:,,,/Resources/playerpause.png";
         private string strRadioAlbumArt = "pack://application:,,,/Resources/kajol.jpg";
 		// internet browser
 		string iBrowser_CurrentURL;
@@ -499,7 +500,7 @@ namespace KitchenTouch
             //string img = jpgFiles[iCurrentSlide];
             fnSlideShowToggle();
             
-            //TODO: open current image in external viewer or in Explorer of in fullscreen
+            //TODO: open current image in external viewer or in Explorer or in fullscreen
             /*
             if (imgSlideShow.Width < 1024)
             {
@@ -1007,7 +1008,7 @@ namespace KitchenTouch
         {
 			try
 			{
-				imgMPlay.Source = imgPlayerCtrl.Source = GetImage(strStopBtnUrl);
+				imgMPlay.Source = imgPlayerCtrl.Source = GetImage(strPauseBtnUrl);
 				CompositionTarget.Rendering -= new EventHandler(CompositionTarget_Rendering);
 			}
 			catch
@@ -1142,12 +1143,12 @@ namespace KitchenTouch
                 fnDebugWrite("Error in btnMPlay_Click: " + ex.Message);
             }
         }
-/*
+
         private void btnMStop_Click(object sender, RoutedEventArgs e)
         {
-            fnMusicPause();
+			fnMusicStop();
         }
-*/
+
         private void btnMNext_Click(object sender, RoutedEventArgs e)
         {
             fnMusicStop();
@@ -1578,7 +1579,8 @@ namespace KitchenTouch
 						W = 1024; H = 768;
 						break;
 				}
-
+				
+				this.WindowState = WindowState.Normal;
 				this.Left = 0;
 				this.Top = 0;
 				this.Width = W;
@@ -1619,8 +1621,21 @@ namespace KitchenTouch
 					{
 						fnDebugWrite("Showing keyboard for [" + tb.Name + "] text box.");
 						TouchKeyboard cTouchKeyboard = new TouchKeyboard(tbCurrent.Text);
-						cTouchKeyboard.ShowDialog();
-						tbCurrent.Text = cTouchKeyboard.ResultText;
+						bool? dialogResult = cTouchKeyboard.ShowDialog();
+						switch (dialogResult)
+						{
+							case true:
+								// User closed keyboard by pressing Enter button
+								tbCurrent.Text = cTouchKeyboard.ResultText;
+								break;
+							case false:
+								// User closed keyboard by pressing Cancel button
+								// do nothing
+								break;
+							default:
+								// Indeterminate
+								break;
+						}
 					}
 				}
 			}
