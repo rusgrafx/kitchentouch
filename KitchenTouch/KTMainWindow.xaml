@@ -1,23 +1,23 @@
 ﻿<Window x:Class="KitchenTouch.KTMainWindow"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Title="Welcome to Ulanov's Home" 
-	ResizeMode="CanResize" WindowStyle="None"
+	Title="Welcome to Ulanov's Home" Name="KTWindow" 
+	ResizeMode="CanResize" WindowStyle="None" Style="{StaticResource WindowStyle}"
 	MinWidth="800" MinHeight="600" Width="1024" Height="768" Left="0" Top="0"
 	Topmost="False" SnapsToDevicePixels="True" Visibility="Visible"
 	TextBoxBase.SelectionChanged="fnTextEntryHandler" SizeChanged="Window_SizeChanged" WindowState="Maximized">
-
-	<Grid>
+		<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="40" />
 			<RowDefinition />
 			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
 
-		<Label Margin="10,0,200,0" Name="lblCurrentDate" FontSize="24" FontFamily="Tahoma" FontWeight="Bold">[TODAY'S DATE AND TIME]</Label>
-		<Label Margin="0,0,10,0" Name="lblWelcome" FontSize="16" FontFamily="Georgia, Tahoma" Height="28.18" HorizontalAlignment="Right" MouseDoubleClick="lblWelcome_MouseDoubleClick">Kitchen Touch v.1.0</Label>
+			
+		<Label Margin="10,0,200,0" Name="lblCurrentDate" Style="{StaticResource DateLabelStyle}">[TODAY'S DATE AND TIME]</Label>
+		<Label Margin="0,0,10,0" Name="lblWelcome" FontSize="16" FontFamily="Georgia, Tahoma" Height="28.18" HorizontalAlignment="Right" MouseDoubleClick="lblWelcome_MouseDoubleClick" Style="{StaticResource LabelStyle}">Kitchen Touch v.1.0 Alpha</Label>
 		
-		<Button Name="btnPlayerCtrl" Grid.RowSpan="2" Width="60" Height="60" Margin="0,40,10,0" HorizontalAlignment="Right" Click="btnMPlay_Click" VerticalAlignment="Top">
+		<Button Name="btnPlayerCtrl" Grid.RowSpan="2" Width="70" Height="70" Margin="0,40,10,0" HorizontalAlignment="Right" Click="btnMPlay_Click" VerticalAlignment="Top">
 			<Image Name="imgPlayerCtrl" Source="/KitchenTouch;component/Resources/playerplay.png" />
 		</Button>
 
@@ -27,8 +27,14 @@
 		</StatusBar>
 		
 		<TabControl Name="tabNavi" Grid.Row="1">
-			<TabItem Name="tabHome" Header="Home" FontSize="16" MinWidth="80" MinHeight="60" IsSelected="True">
-				<TabPanel Name="tabPHome" Loaded="tabPHome_Loaded" Unloaded="tabPHome_Unloaded">
+			<TabItem Name="tabHome" ToolTip="Home" Padding="2" IsSelected="True">
+				<TabItem.Header>
+					<StackPanel Width="70" Margin="0">
+						<Image Width="70" Source="/KitchenTouch;component/Resources/home2.png" HorizontalAlignment="Center" />
+						<!-- Label Width="60" HorizontalContentAlignment="Center">Home</Label -->
+					</StackPanel>
+				</TabItem.Header>
+				<TabPanel Name="tabPHome" Loaded="tabPHome_Loaded" Unloaded="tabPHome_Unloaded" Style="{StaticResource TabPanelStyle}">
 					<Grid Margin="0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="254" />
@@ -37,27 +43,27 @@
 						</Grid.ColumnDefinitions>
 
 						<StackPanel>
-							<Label Margin="5" FontWeight="Bold">Current Home Status</Label>
-							<Label Margin="5" FontWeight="Bold" FontSize="12">Lights:</Label>
-							<Label Name="lblStatusLights" Margin="10,0,0,0" IsEnabled="False" FontSize="12">All lights are off</Label>
-							<Label Margin="5" FontWeight="Bold" FontSize="12">Motion:</Label>
-							<Label Name="lblStatusMotion" Margin="10,0,0,0" IsEnabled="False" FontSize="12">No motion detected</Label>
-							<Label Margin="5" FontWeight="Bold" FontSize="12">Alerts:</Label>
-							<Label Name="lblStatusAlerts" Margin="10,0,0,0" IsEnabled="False" FontSize="12">No recent alerts</Label>
-							<Label Margin="5" FontWeight="Bold" FontSize="12">Window size:</Label>
-							<Label Name="lblStatusResolution" Margin="10,0,0,0" FontSize="12">---x---</Label>
+							<Label Margin="5" FontWeight="Bold" Style="{StaticResource LabelStyle}">Current Home Status</Label>
+							<Label Margin="5" FontWeight="Bold" FontSize="12" Style="{StaticResource LabelStyle}">Lights:</Label>
+							<Label Name="lblStatusLights" Margin="10,0,0,0" IsEnabled="False" FontSize="12" Style="{StaticResource LabelStyle}">All lights are off</Label>
+							<Label Margin="5" FontWeight="Bold" FontSize="12" Style="{StaticResource LabelStyle}">Motion:</Label>
+							<Label Name="lblStatusMotion" Margin="10,0,0,0" IsEnabled="False" FontSize="12" Style="{StaticResource LabelStyle}">No motion detected</Label>
+							<Label Margin="5" FontWeight="Bold" FontSize="12" Style="{StaticResource LabelStyle}">Alerts:</Label>
+							<Label Name="lblStatusAlerts" Margin="10,0,0,0" IsEnabled="False" FontSize="12" Style="{StaticResource LabelStyle}">No recent alerts</Label>
+							<Label Margin="5" FontWeight="Bold" FontSize="12" Style="{StaticResource LabelStyle}">Window size:</Label>
+							<Label Name="lblStatusResolution" Margin="10,0,0,0" FontSize="12" Style="{StaticResource LabelStyle}">---x---</Label>
 						</StackPanel>
 						
-						<StackPanel Grid.Column="1" Margin="0" CanVerticallyScroll="False">
+						<StackPanel Margin="5" Grid.Column="1" CanVerticallyScroll="False" CanHorizontallyScroll="False">
 							<Border BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5,5,5,5" Focusable="True" Padding="10">
 								<Image Name="imgSlideShow" Stretch="Uniform" Margin="0" MinWidth="320" MinHeight="240" MouseDown="imgSlideShow_MouseDown" />
 							</Border>
 						</StackPanel>
 						
 						<StackPanel Grid.Column="2" Orientation="Vertical">
-							<Button Name="btnHome" Margin="10,10,10,10" Height="60" Click="btnHome_Click">I'm home!</Button>
-							<Button Name="btnAway" Margin="10,0,10,10" Height="60" Click="btnAway_Click">Good bye</Button>
-							<Button Name="btnToggleSlideShow" Margin="10,60,10,10" Height="60" Click="btnToggleSlideShow_Click">Start slide show</Button>
+							<Button Name="btnHome" Margin="10,10,10,10" Height="60" Click="btnHome_Click" Style="{StaticResource ButtonStyle}">I'm home!</Button>
+							<Button Name="btnAway" Margin="10,0,10,10" Height="60" Click="btnAway_Click" Style="{StaticResource ButtonStyle}">Good bye</Button>
+							<Button Name="btnToggleSlideShow" Margin="10,60,10,10" Height="60" Click="btnToggleSlideShow_Click" Style="{StaticResource ButtonStyle}">Start slide show</Button>
 							<StackPanel Orientation="Horizontal">
 								<Button Name="btnSlideShowPrev" Margin="10" Width="80" Height="60" Click="btnSlideShowPrev_Click">
 									<Image Source="/KitchenTouch;component/Resources/playerprevious.png" Stretch="Fill" />
@@ -70,8 +76,14 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabCalendar" Header="Calendar" FontSize="16" MinWidth="80" MinHeight="60">
-				<TabPanel Name="tabPCalendar">
+			<TabItem Name="tabCalendar" ToolTip="Calendar" Padding="2">
+				<TabItem.Header>
+					<StackPanel Width="70" Margin="0">
+						<Image Width="70" Source="/KitchenTouch;component/Resources/calendar.png" HorizontalAlignment="Center" />
+						<!-- Label Width="60" HorizontalContentAlignment="Center">Calendar</Label -->
+					</StackPanel>
+				</TabItem.Header>
+				<TabPanel Name="tabPCalendar" Style="{StaticResource TabPanelStyle}">
 					<Grid Margin="0">
 						<Border BorderBrush="Gray" BorderThickness="0" Margin="0">
 							<Frame Name="frameCalendar" MinWidth="620" MinHeight="480" Margin="0" Source="http://www.google.com/calendar/render?hl=en" />
@@ -79,8 +91,14 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabWeather" Header="Weather" FontSize="16" MinWidth="80" MinHeight="60">
-				<TabPanel Name="tabPWeather" Loaded="tabPWeather_Loaded" Unloaded="tabPWeather_Unloaded">
+			<TabItem Name="tabWeather" ToolTip="Weather" Padding="2">
+				<TabItem.Header>
+					<StackPanel Width="70" Margin="0">
+						<Image Width="70" Source="/KitchenTouch;component/Resources/weathercouldsun.png" HorizontalAlignment="Center" />
+						<!-- Label Width="60" HorizontalContentAlignment="Center">Weather</Label -->
+					</StackPanel>
+				</TabItem.Header>
+				<TabPanel Name="tabPWeather" Loaded="tabPWeather_Loaded" Unloaded="tabPWeather_Unloaded" Style="{StaticResource TabPanelStyle}">
 					<Grid Margin="0">
 <!--
 						<Grid.ColumnDefinitions>
@@ -101,8 +119,14 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabCameras" Header="Cameras" FontSize="16" MinWidth="80" MinHeight="60">
-				<TabPanel Name="tabPCameras" Loaded="tabPCameras_Loaded" Unloaded="tabPCameras_Unloaded">
+			<TabItem Name="tabCameras" ToolTip="Cameras" Padding="2">
+				<TabItem.Header>
+					<StackPanel Width="70" Margin="0">
+						<Image Width="70" Source="/KitchenTouch;component/Resources/photo.png" HorizontalAlignment="Center" />
+						<!-- Label Width="60" HorizontalContentAlignment="Center">Cameras</Label -->
+					</StackPanel>
+				</TabItem.Header>
+				<TabPanel Name="tabPCameras" Loaded="tabPCameras_Loaded" Unloaded="tabPCameras_Unloaded" Style="{StaticResource TabPanelStyle}">
 					<Grid Margin="0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition />
@@ -114,38 +138,41 @@
 						</Border>
 
 						<StackPanel Grid.Column="1">
-							<Label Name="lblCamName" Margin="10">[CURRENT CAMERA]</Label>
-							<Button Name="btnWebCam1" Margin="10" Height="60" Click="btnWebCam_Click"></Button>
-							<Button Name="btnWebCam2" Margin="10" Height="60" Click="btnWebCam_Click"></Button>
-							<Button Name="btnWebCam3" Margin="10" Height="60" Click="btnWebCam_Click"></Button>
-							<Button Name="btnWebCam4" Margin="10" Height="60" Click="btnWebCam_Click"></Button>
+							<Label Name="lblCamName" Margin="10" Style="{StaticResource LabelStyle}">[CURRENT CAMERA]</Label>
+							<Button Name="btnWebCam1" Margin="10" Height="60" Click="btnWebCam_Click" Style="{StaticResource ButtonStyle}"></Button>
+							<Button Name="btnWebCam2" Margin="10" Height="60" Click="btnWebCam_Click" Style="{StaticResource ButtonStyle}"></Button>
+							<Button Name="btnWebCam3" Margin="10" Height="60" Click="btnWebCam_Click" Style="{StaticResource ButtonStyle}"></Button>
+							<Button Name="btnWebCam4" Margin="10" Height="60" Click="btnWebCam_Click" Style="{StaticResource ButtonStyle}"></Button>
 							<StackPanel Orientation="Horizontal">
-								<CheckBox Name="cbWebCamRefresh" Margin="10" Unchecked="cbWebCamRefresh_Clicked" Checked="cbWebCamRefresh_Clicked"> Enable Refresh</CheckBox>
+								<CheckBox Name="cbWebCamRefresh" Margin="10" Unchecked="cbWebCamRefresh_Clicked" Checked="cbWebCamRefresh_Clicked" Style="{StaticResource CheckBoxStyle}"> Enable Refresh</CheckBox>
 							</StackPanel>
 						</StackPanel>
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<!--
-			<TabItem Name="tabLights" Header="Lights" FontSize="16" MinWidth="80" MinHeight="60">
-				<TabPanel Name="tabPLights">
-					<Grid VerticalAlignment="Stretch" Margin="0" Width="1024" Height="598">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="1024*" />
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="598*" />
-						</Grid.RowDefinitions>
-						<Label Name="lblLights">Lighting control</Label>
-						<Viewbox Width="512">
-							<Label>Under construction</Label>
-						</Viewbox>
+			<TabItem Name="tabLights" ToolTip="Lights" Padding="2">
+				<TabItem.Header>
+					<StackPanel Width="70" Margin="0">
+						<Image Width="70" Source="/KitchenTouch;component/Resources/light.png" HorizontalAlignment="Center" />
+						<!-- Label Width="60" HorizontalContentAlignment="Center">Lights</Label -->
+					</StackPanel>
+				</TabItem.Header>
+				<TabPanel Name="tabPLights" Loaded="tabPLights_Loaded" Style="{StaticResource TabPanelStyle}">
+					<Grid Margin="0">
+						<Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+							<WebBrowser Name="lBrowser" Margin="0" />
+						</Border>
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			-->
-			<TabItem Name="tabBrowser" Header="Web" FontSize="16" MinWidth="80" MinHeight="60">
-				<TabPanel Name="tabPBrowser" Loaded="tabPBrowser_Loaded" Unloaded="tabPBrowser_Unloaded">
+			<TabItem Name="tabBrowser" ToolTip="Web" Padding="2">
+				<TabItem.Header>
+					<StackPanel Width="70" Margin="0">
+						<Image Width="70" Source="/KitchenTouch;component/Resources/globe.png" HorizontalAlignment="Center" />
+						<!-- Label Width="60" HorizontalContentAlignment="Center">Internet</Label -->
+					</StackPanel>
+				</TabItem.Header>
+				<TabPanel Name="tabPBrowser" Loaded="tabPBrowser_Loaded" Unloaded="tabPBrowser_Unloaded" Style="{StaticResource TabPanelStyle}">
 					<Grid Margin="0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition />
@@ -153,16 +180,16 @@
 						</Grid.ColumnDefinitions>
 
 						<Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-							<WebBrowser Name="iBrowser" Margin="0" />
+							<WebBrowser Name="iBrowser" Margin="0" LoadCompleted="iBrowser_LoadCompleted" />
 						</Border>
 						
 						<StackPanel Grid.Column="1">
 							<Button Name="btnGoWeb0"	Margin="5" Height="50" Width="50" Click="goWeb_Click">
 								<Image Source="/KitchenTouch;component/Resources/home2.png" />
 							</Button>
-							<Button Name="btnGoWeb1"	Margin="5" Height="60" Click="goWeb_Click"></Button>
-							<Button Name="btnGoWeb2"	Margin="5" Height="60" Click="goWeb_Click"></Button>
-							<Button Name="btnGoWeb3"	Margin="5" Height="60" Click="goWeb_Click"></Button>
+							<Button Name="btnGoWeb1"	Margin="5" Height="60" Click="goWeb_Click" Style="{StaticResource ButtonStyle}"></Button>
+							<Button Name="btnGoWeb2"	Margin="5" Height="60" Click="goWeb_Click" Style="{StaticResource ButtonStyle}"></Button>
+							<Button Name="btnGoWeb3"	Margin="5" Height="60" Click="goWeb_Click" Style="{StaticResource ButtonStyle}"></Button>
 							<StackPanel Orientation="Horizontal">
 								<TextBox Name="txtUrl"		Margin="5,0,0,0" Height="40" Width="95" FontSize="10" VerticalContentAlignment="Center">http://ulanoff.com/</TextBox>
 								<Button Name="btnGoTo"		Margin="5" Height="40" Width="40" Click="btnGoTo_Click" ToolTip="Go">
@@ -170,18 +197,18 @@
 								</Button>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-								<Button Name="goBack"		Margin="5" Height="64" Width="64" Click="goBack_Click" ToolTip="Back">
+								<Button Name="goBack"		Margin="5" Height="60" Width="60" Click="goHistory_Click" ToolTip="Back">
 									<Image Source="/KitchenTouch;component/Resources/arrow1left.png" Stretch="Fill" />
 								</Button>
-								<Button Name="goForward"	Margin="5" Height="64" Width="64" Click="goBack_Click" ToolTip="Forward">
+								<Button Name="goForward"	Margin="5" Height="60" Width="60" Click="goHistory_Click" ToolTip="Forward">
 									<Image Source="/KitchenTouch;component/Resources/arrow1right.png" Stretch="Fill" />
 								</Button>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-								<Button Name="btnBRefresh"	Margin="5" Height="64" Width="64" Click="btnBRefresh_Click" ToolTip="Refresh">
+								<Button Name="btnBRefresh"	Margin="5" Height="60" Width="60" Click="btnBRefresh_Click" ToolTip="Refresh">
 									<Image Source="/KitchenTouch;component/Resources/refresh.png" Stretch="Fill" />
 								</Button>
-								<Button Name="btnBStop"		Margin="5" Height="64" Width="64" Click="btnBStop_Click" ToolTip="Unload">
+								<Button Name="btnBStop"		Margin="5" Height="60" Width="60" Click="btnBStop_Click" ToolTip="Unload">
 									<Image Source="/KitchenTouch;component/Resources/cancel.png" Stretch="Fill" />
 								</Button>
 							</StackPanel>
@@ -189,8 +216,14 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabMusic" Header="Music" FontSize="16" MinWidth="80" MinHeight="60">
-				<TabPanel Name="tabPMusic" Loaded="tabPMusic_Loaded">
+			<TabItem Name="tabMusic" ToolTip="Music" Padding="2">
+				<TabItem.Header>
+					<StackPanel Width="70" Margin="0">
+						<Image Width="70" Source="/KitchenTouch;component/Resources/music.png" HorizontalAlignment="Center" />
+						<!-- Label Width="60" HorizontalContentAlignment="Center">Music</Label -->
+					</StackPanel>
+				</TabItem.Header>
+				<TabPanel Name="tabPMusic" Loaded="tabPMusic_Loaded" Style="{StaticResource TabPanelStyle}">
 					<Grid Margin="0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition />
@@ -204,14 +237,14 @@
 						<StackPanel Orientation="Vertical">
 							<TabControl Name="tabcM" TabStripPlacement="Bottom" Margin="5" Height="510" Width="560">
 								<TabItem Name="tabiMCurrent" Header="Now Playing" FontSize="24" IsSelected="True">
-									<TabPanel Name="tabpMCurrent" Loaded="tabpMCurrent_Loaded">
+									<TabPanel Name="tabpMCurrent" Loaded="tabpMCurrent_Loaded" Style="{StaticResource TabPanelStyle}">
 										<Border BorderThickness="0" BorderBrush="Gray" Margin="0">
 											<ListBox Name="lbPlayLists" Margin="0" FontSize="24" Background="WhiteSmoke" SelectionChanged="lbPlayLists_SelectionChanged" />
 										</Border>
 									</TabPanel>
 								</TabItem>
 								<TabItem Name="tabiMLib" Header="Library" FontSize="24">
-									<TabPanel Name="tabpMLib" Loaded="tabpMLib_Loaded">
+									<TabPanel Name="tabpMLib" Loaded="tabpMLib_Loaded" Style="{StaticResource TabPanelStyle}">
 										<Border BorderThickness="0" BorderBrush="Gray" Margin="0">
 											<ListBox Name="lbMLib" Margin="0" FontSize="24" Background="WhiteSmoke">
 												<ListBoxItem>Library is under construction...</ListBoxItem>
@@ -227,10 +260,10 @@
 								<Image Source="/KitchenTouch;component/Resources/folder2.png" />
 							</Button>
 
-							<Button Name="btnMRadio1" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="Beige" FontWeight="Bold"></Button>
-							<Button Name="btnMRadio2" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="AliceBlue" FontWeight="Bold"></Button>
-							<Button Name="btnMRadio3" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="Cornsilk" FontWeight="Bold"></Button>
-							<Button Name="btnMRadio4" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="Gainsboro" FontWeight="Bold"></Button>
+							<Button Name="btnMRadio1" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource ButtonStyle}"></Button>
+							<Button Name="btnMRadio2" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource ButtonStyle}"></Button>
+							<Button Name="btnMRadio3" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource ButtonStyle}"></Button>
+							<Button Name="btnMRadio4" Width="60" Height="60" Margin="5" FontSize="10" Click="btnMRadio_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource ButtonStyle}"></Button>
 							<MediaElement Name="mediaElement" Height="60" Width="60" Margin="5" LoadedBehavior="Manual" UnloadedBehavior="Manual" Volume="1" />
 							<MediaElement Name="mediaElement2" Height="60" Width="60" Margin="5" LoadedBehavior="Manual" UnloadedBehavior="Manual" Volume="1" />
 						</StackPanel>
@@ -240,12 +273,12 @@
 								<Image Name="imgAlbumCover" Width="320" Height="320" Margin="20" Stretch="Uniform" StretchDirection="Both" VerticalAlignment="Center" HorizontalAlignment="Center" />
 							</Border>
 							<StackPanel Grid.Column="1" Margin="10,20,0,0">
-								<Label Name="lblMArtist" FontSize="12">Artist:</Label>
-								<Label Name="lblMAlbum" FontSize="12">Album:</Label>
-								<Label Name="lblMFile" FontSize="12">Song:</Label>
+								<Label Name="lblMArtist" FontSize="12" Style="{StaticResource LabelStyle}">Artist:</Label>
+								<Label Name="lblMAlbum" FontSize="12" Style="{StaticResource LabelStyle}">Album:</Label>
+								<Label Name="lblMFile" FontSize="12" Style="{StaticResource LabelStyle}">Song:</Label>
 								<StackPanel Orientation="Horizontal">
 									<ProgressBar Name="pbarMPosition" Width="260"></ProgressBar>
-									<Label Name="lblMPosition" Margin="10,0,0,0" FontSize="10">--:-- / --:--</Label>
+									<Label Name="lblMPosition" Margin="10,0,0,0" FontSize="10" Style="{StaticResource LabelStyle}">--:-- / --:--</Label>
 								</StackPanel>
 							</StackPanel>
 						</StackPanel>
@@ -274,82 +307,50 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabiSettings" Header="Settings" FontSize="16" MinWidth="80" MinHeight="60">
-				<TabPanel Name="tabpSettings" Loaded="tabpSettings_Loaded" Unloaded="tabpSettings_Unloaded" SizeChanged="tabpSettings_SizeChanged">
+			<TabItem Name="tabiSettings" ToolTip="Settings" Padding="2">
+				<TabItem.Header>
+					<StackPanel Width="70" Margin="0">
+						<Image Width="70" Source="/KitchenTouch;component/Resources/gear.png" HorizontalAlignment="Center" />
+						<!-- Label Width="60" HorizontalContentAlignment="Center">Settings</Label -->
+					</StackPanel>
+				</TabItem.Header>
+				<TabPanel Name="tabpSettings" Loaded="tabpSettings_Loaded" Unloaded="tabpSettings_Unloaded" SizeChanged="tabpSettings_SizeChanged" Style="{StaticResource TabPanelStyle}">
 					<Grid Margin="0">
-						<ScrollViewer Name="svSettings" HorizontalAlignment="Left" MinWidth="800" VerticalScrollBarVisibility="Auto">
+						<ScrollViewer Name="svSettings" HorizontalAlignment="Left" MinWidth="700" VerticalScrollBarVisibility="Auto" IsTabStop="True">
 							<StackPanel HorizontalAlignment="Left" Margin="5" CanVerticallyScroll="True">
-								<GroupBox Header="Generic (not saved)" Margin="0,20,0,0">
+								<GroupBox Style="{StaticResource GroupBoxStyle}">
+									<GroupBox.Header>
+										<Label Style="{StaticResource LabelStyle}">Generic (not saved)</Label>
+									</GroupBox.Header>
 									<StackPanel>
 										<StackPanel Orientation="Horizontal" Margin="5">
-											<Label>Set window size: </Label>
-											<Button Name="btnSet800x600" Margin="5" Click="fnSetWindowSize">800x600</Button>
-											<Button Name="btnSet1024x768" Margin="5" Click="fnSetWindowSize">1024x768</Button>
-											<Button Name="btnSet1280x1024" Margin="5" Click="fnSetWindowSize">1280x1024</Button>
-											<Button Name="btnSetFullscreen" Margin="5" Click="fnSetWindowSize">Maximize</Button>
+											<Label Style="{StaticResource LabelStyle}">Set window size: </Label>
+											<Button Name="btnSet800x600" Margin="5" Click="fnSetWindowSize" Style="{StaticResource ButtonStyle}">800x600</Button>
+											<Button Name="btnSet1024x768" Margin="5" Click="fnSetWindowSize" Style="{StaticResource ButtonStyle}">1024x768</Button>
+											<Button Name="btnSet1280x1024" Margin="5" Click="fnSetWindowSize" Style="{StaticResource ButtonStyle}">1280x1024</Button>
+											<Button Name="btnSetFullscreen" Margin="5" Click="fnSetWindowSize" Style="{StaticResource ButtonStyle}">Maximize</Button>
 										</StackPanel>
-										<CheckBox Name="chkTouchKbd" Margin="10" Checked="chkTouchKbd_Set" Unchecked="chkTouchKbd_Set"> Enable Virtual Keyboard</CheckBox>
-										<CheckBox Name="cbEnableDebug" Margin="10" Click="cbEnableDebug_Click"> Enable Debug Messages</CheckBox>
+										<CheckBox Name="chkTouchKbd" Margin="10" Checked="chkTouchKbd_Set" Unchecked="chkTouchKbd_Set" Style="{StaticResource CheckBoxStyle}"> Enable Virtual Keyboard</CheckBox>
+										<CheckBox Name="cbEnableDebug" Margin="10" Click="cbEnableDebug_Click" Style="{StaticResource CheckBoxStyle}"> Enable Debug Messages</CheckBox>
 									</StackPanel>
 								</GroupBox>
-								<Button Click="SaveConfig_Click" Margin="0,20,0,0">Save settings</Button>
-								<GroupBox Header="Weather" Margin="0,20,0,0">
+								
+								<Button Click="SaveConfig_Click" Margin="0,10,0,10" Style="{StaticResource ButtonStyle}" Height="30">Save / Apply Settings</Button>
+								
+								<GroupBox Style="{StaticResource GroupBoxStyle}">
+									<GroupBox.Header>
+										<Label Style="{StaticResource LabelStyle}">Home/Pictures</Label>
+									</GroupBox.Header>
 									<StackPanel>
 										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-											<Label Width="150" Margin="5">Zip code:</Label>
-											<TextBox Name="tbZip" Width="60" Margin="5" TextAlignment="Center">94568</TextBox>
-										</StackPanel>
-									</StackPanel>
-								</GroupBox>
-								<GroupBox Header="Cameras" Margin="0,20,0,0">
-									<GroupItem>
-										<StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">WebCam #1 Title:</Label>
-												<TextBox Name="tbWebCamBtn1Caption" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">WebCam #1 URL:</Label>
-												<TextBox Name="tbWebCamBtn1URL" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">WebCam #2 Title:</Label>
-												<TextBox Name="tbWebCamBtn2Caption" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">WebCam #2 URL:</Label>
-												<TextBox Name="tbWebCamBtn2URL" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">WebCam #3 Title:</Label>
-												<TextBox Name="tbWebCamBtn3Caption" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">WebCam #3 URL:</Label>
-												<TextBox Name="tbWebCamBtn3URL" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">WebCam #4 Title:</Label>
-												<TextBox Name="tbWebCamBtn4Caption" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">WebCam #4 URL:</Label>
-												<TextBox Name="tbWebCamBtn4URL" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-										</StackPanel>
-									</GroupItem>
-								</GroupBox>
-								<GroupBox Header="Home/Pictures" Margin="0,20,0,0">
-									<StackPanel>
-										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-											<Label Width="200" Margin="5">Default SlideShow folder:</Label>
-											<TextBox Name="tbDefaultPictureDir" MinWidth="300" Margin="5"></TextBox>
+											<Label Width="150" Margin="5" VerticalAlignment="Center" Style="{StaticResource LabelStyle}">Default SlideShow folder:</Label>
+											<TextBox Name="tbDefaultPictureDir" MinWidth="265" Margin="5" VerticalAlignment="Center"></TextBox>
 											<Button Width="32" Height="32" Margin="5" ToolTip="Select folder">
 												<Image Source="/KitchenTouch;component/Resources/folder2.png" />
 											</Button>
 										</StackPanel>
 										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-											<Label Width="200" Margin="5">SlideShow speed:</Label>
+											<Label Width="200" Margin="5" Style="{StaticResource LabelStyle}">SlideShow speed:</Label>
 											<Button Name="btnSlideShowDelayLess" Width="30" Margin="0,5,0,5" Click="btnSlideShowDelayLess_Click">
 												<Image Source="/KitchenTouch;component/Resources/minus.png" />
 											</Button>
@@ -357,90 +358,159 @@
 											<Button Name="btnSlideShowDelayMore" Width="30" Margin="0,5,5,5" Click="btnSlideShowDelayMore_Click">
 												<Image Source="/KitchenTouch;component/Resources/plus.png" />
 											</Button>
-											<Label Margin="5">seconds (0-60)</Label>
+											<Label Margin="5" Style="{StaticResource LabelStyle}">seconds (0-60)</Label>
 										</StackPanel>
 									</StackPanel>
 								</GroupBox>
-								<GroupBox Header="Music" Margin="0,20,0,0">
+								<GroupBox Style="{StaticResource GroupBoxStyle}">
+									<GroupBox.Header>
+										<Label Style="{StaticResource LabelStyle}">Weather</Label>
+									</GroupBox.Header>
+									<StackPanel>
+										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+											<Label Width="150" Margin="5" Style="{StaticResource LabelStyle}">Zip code:</Label>
+											<TextBox Name="tbZip" Width="60" Margin="5" TextAlignment="Center">94568</TextBox>
+										</StackPanel>
+									</StackPanel>
+								</GroupBox>
+								<GroupBox Style="{StaticResource GroupBoxStyle}">
+									<GroupBox.Header>
+										<Label Style="{StaticResource LabelStyle}">Cameras</Label>
+									</GroupBox.Header>
 									<GroupItem>
 										<StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="200">Default Music folder:</Label>
-												<TextBox Name="tbDefaultMusicDir" MinWidth="300" Margin="5"></TextBox>
-												<Button Width="32" Height="32" Margin="5" ToolTip="Select folder">
-													<Image Source="/KitchenTouch;component/Resources/folder2.png" />
-												</Button>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #1 Title:</Label>
+												<TextBox Name="tbWebCamBtn1Caption" MinWidth="265" Margin="5"></TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Radio #1 Title:</Label>
-												<TextBox Name="tbRadioBtn1Caption" MinWidth="265" Margin="5"></TextBox>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #1 URL:</Label>
+												<TextBox Name="tbWebCamBtn1URL" MinWidth="265" Margin="5"></TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Radio #1 URL:</Label>
-												<TextBox Name="tbRadioBtn1URL" MinWidth="265" Margin="5"></TextBox>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #2 Title:</Label>
+												<TextBox Name="tbWebCamBtn2Caption" MinWidth="265" Margin="5"></TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Radio #2 Title:</Label>
-												<TextBox Name="tbRadioBtn2Caption" MinWidth="265" Margin="5"></TextBox>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #2 URL:</Label>
+												<TextBox Name="tbWebCamBtn2URL" MinWidth="265" Margin="5"></TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Radio #2 URL:</Label>
-												<TextBox Name="tbRadioBtn2URL" MinWidth="265" Margin="5"></TextBox>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #3 Title:</Label>
+												<TextBox Name="tbWebCamBtn3Caption" MinWidth="265" Margin="5"></TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Radio #3 Title:</Label>
-												<TextBox Name="tbRadioBtn3Caption" MinWidth="265" Margin="5"></TextBox>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #3 URL:</Label>
+												<TextBox Name="tbWebCamBtn3URL" MinWidth="265" Margin="5"></TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Radio #3 URL:</Label>
-												<TextBox Name="tbRadioBtn3URL" MinWidth="265" Margin="5"></TextBox>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #4 Title:</Label>
+												<TextBox Name="tbWebCamBtn4Caption" MinWidth="265" Margin="5"></TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Radio #4 Title:</Label>
-												<TextBox Name="tbRadioBtn4Caption" MinWidth="265" Margin="5"></TextBox>
-											</StackPanel>
-											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Radio #4 URL:</Label>
-												<TextBox Name="tbRadioBtn4URL" MinWidth="265" Margin="5"></TextBox>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #4 URL:</Label>
+												<TextBox Name="tbWebCamBtn4URL" MinWidth="265" Margin="5"></TextBox>
 											</StackPanel>
 										</StackPanel>
 									</GroupItem>
 								</GroupBox>
-								<GroupBox Header="Internet" Margin="0,20,0,0">
+								<GroupBox Style="{StaticResource GroupBoxStyle}">
+									<GroupBox.Header>
+										<Label Style="{StaticResource LabelStyle}">Lights/Home Automation</Label>
+									</GroupBox.Header>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+										<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Controller's URL:</Label>
+										<TextBox Name="tbAutomationURL" MinWidth="265" Margin="5"></TextBox>
+									</StackPanel>
+								</GroupBox>
+								<GroupBox Style="{StaticResource GroupBoxStyle}">
+									<GroupBox.Header>
+										<Label Style="{StaticResource LabelStyle}">Internet</Label>
+									</GroupBox.Header>
 									<GroupItem>
 										<StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Home URL:</Label>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Home URL:</Label>
 												<TextBox Name="tbInternetBtn0URL" MinWidth="450" Margin="5" IsEnabled="False" Focusable="False" IsTabStop="False">http://google.com</TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Favorite #1 Title:</Label>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Favorite #1 Title:</Label>
 												<TextBox Name="tbInternetBtn1Caption" MinWidth="265" Margin="5">Google</TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Favorite #1 URL:</Label>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Favorite #1 URL:</Label>
 												<TextBox Name="tbInternetBtn1URL" Width="450" Margin="5">http://google.com</TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Favorite #2 Title:</Label>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Favorite #2 Title:</Label>
 												<TextBox Name="tbInternetBtn2Caption" MinWidth="265" Margin="5">Yahoo</TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Favorite #2 URL:</Label>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Favorite #2 URL:</Label>
 												<TextBox Name="tbInternetBtn2URL" MinWidth="450" Margin="5">http://yahoo.com</TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Favorite #3 Title:</Label>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Favorite #3 Title:</Label>
 												<TextBox Name="tbInternetBtn3Caption" MinWidth="265" Margin="5">CNN</TextBox>
 											</StackPanel>
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-												<Label Margin="5" Width="150">Favorite #3 URL:</Label>
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Favorite #3 URL:</Label>
 												<TextBox Name="tbInternetBtn3URL" MinWidth="450" Margin="5">http://cnn.com</TextBox>
 											</StackPanel>
 										</StackPanel>
 									</GroupItem>
 								</GroupBox>
-								<Button Click="SaveConfig_Click" Margin="0,20,0,0">Save settings</Button>
+								<GroupBox Style="{StaticResource GroupBoxStyle}">
+									<GroupBox.Header>
+										<Label Style="{StaticResource LabelStyle}">Music</Label>
+									</GroupBox.Header>
+									<GroupItem>
+										<StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" VerticalAlignment="Center" Style="{StaticResource LabelStyle}">Default Music folder:</Label>
+												<TextBox Name="tbDefaultMusicDir" MinWidth="265" Margin="5" VerticalAlignment="Center"></TextBox>
+												<Button Width="32" Height="32" Margin="5" ToolTip="Select folder">
+													<Image Source="/KitchenTouch;component/Resources/folder2.png" />
+												</Button>
+											</StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Radio #1 Title:</Label>
+												<TextBox Name="tbRadioBtn1Caption" MinWidth="265" Margin="5"></TextBox>
+											</StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Radio #1 URL:</Label>
+												<TextBox Name="tbRadioBtn1URL" MinWidth="265" Margin="5"></TextBox>
+											</StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Radio #2 Title:</Label>
+												<TextBox Name="tbRadioBtn2Caption" MinWidth="265" Margin="5"></TextBox>
+											</StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Radio #2 URL:</Label>
+												<TextBox Name="tbRadioBtn2URL" MinWidth="265" Margin="5"></TextBox>
+											</StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Radio #3 Title:</Label>
+												<TextBox Name="tbRadioBtn3Caption" MinWidth="265" Margin="5"></TextBox>
+											</StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Radio #3 URL:</Label>
+												<TextBox Name="tbRadioBtn3URL" MinWidth="265" Margin="5"></TextBox>
+											</StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Radio #4 Title:</Label>
+												<TextBox Name="tbRadioBtn4Caption" MinWidth="265" Margin="5"></TextBox>
+											</StackPanel>
+											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Radio #4 URL:</Label>
+												<TextBox Name="tbRadioBtn4URL" MinWidth="265" Margin="5"></TextBox>
+											</StackPanel>
+										</StackPanel>
+									</GroupItem>
+								</GroupBox>
+								
+								<Button Click="SaveConfig_Click" Margin="0,10,0,10" Style="{StaticResource ButtonStyle}" Height="30">Save / Apply Settings</Button>
+
 							</StackPanel>
 						</ScrollViewer>
 					</Grid>

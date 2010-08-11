@@ -24,6 +24,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -72,6 +73,7 @@ namespace KitchenTouch
 		[XmlRoot("KitchenTouchConfig")]
 		public class KitchenTouchConfig
 		{
+			[XmlAttribute("Saved")]	public DateTime dCfgDateSaved;
 			#region CFG Generic
 				[XmlElement("EnableTouchKeyboard")]	public bool bCfgEnableTouchKeyboard;
 			#endregion
@@ -112,6 +114,10 @@ namespace KitchenTouch
 
 				[XmlElement("WebCam4Caption")] public string sCfgWebCam4Caption;
 				[XmlElement("WebCam4URL")] public string sCfgWebCam4URL;
+			#endregion
+			
+			#region CFG Lights
+				[XmlElement("AutomationURL")] public string sCfgAutomationURL;
 			#endregion
 
 			#region CFG Internet
@@ -159,6 +165,10 @@ namespace KitchenTouch
 
 			private string strWebCam4Caption;
 			private string strWebCam4URL;
+		#endregion
+
+		#region USR Lights
+			private string strAutomationURL;
 		#endregion
 
 		#region USR Internet
@@ -209,10 +219,11 @@ namespace KitchenTouch
 			this.WebCamTimer.Interval = new TimeSpan(0, 0, iWebCamInterval);
 			this.WebCamTimer.Tick += new EventHandler(WebCam_Tick);
 
-            //this.btnPlayerCtrl.FontSize = 38;
-            //this.btnPlayerCtrl.Content = PLAY_LABEL;
             this.mediaElement.MediaEnded += new RoutedEventHandler(btnMNext_Click);
-
+			if (strAutomationURL == null)
+			{
+				tabLights.Visibility = Visibility.Collapsed;
+			}
         }
 
         private void lblWelcome_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -650,6 +661,13 @@ namespace KitchenTouch
 		*/
 		#endregion
 
+		#region * LIGHTS / HOME AUTOMATION *
+		private void tabPLights_Loaded(object sender, RoutedEventArgs e)
+		{
+			lBrowser.Navigate(new Uri(strAutomationURL));
+		}
+		#endregion
+
 		#region * INTERNET PANE *
 		private void fnBrowserNavigate(string url)
         {
@@ -691,6 +709,19 @@ namespace KitchenTouch
 			fnStatusWrite("");
         }
 
+		private void iBrowser_LoadCompleted(object sender, NavigationEventArgs e)
+		{
+			try
+			{
+				//display URL of the last navigated page's in the status bar
+				string strCurrentURL = iBrowser.Source.ToString();
+				fnStatusWrite(strCurrentURL);
+			}
+			catch
+			{
+			}
+		}
+
 		private void btnBStop_Click(object sender, RoutedEventArgs e)
 		{
 			//TODO: Implement real stop function
@@ -702,7 +733,10 @@ namespace KitchenTouch
 		{
 			try
 			{
-				iBrowser.Refresh(true);
+				if (iBrowser.Source.ToString() != "")
+				{
+					iBrowser.Refresh(true);
+				}
 			}
 			catch
 			{
@@ -715,12 +749,21 @@ namespace KitchenTouch
             fnBrowserNavigate(url);
         }
 
-        private void goBack_Click(object sender, RoutedEventArgs e)
+        private void goHistory_Click(object sender, RoutedEventArgs e)
         {
             //go to previous page
 			try
 			{
-				iBrowser.GoBack();
+				System.Windows.Controls.Button btn = (System.Windows.Controls.Button)e.OriginalSource;
+				switch (btn.Name)
+				{
+					case "goBack":
+						if (iBrowser.CanGoBack) iBrowser.GoBack();
+						break;
+					case "goForward":
+						if (iBrowser.CanGoForward) iBrowser.GoForward();
+						break;
+				}
 			}
 			catch
 			{
@@ -826,7 +869,8 @@ namespace KitchenTouch
             {
                 if (mp3Files.Length == 0 || reload)
                 {
-                    iCurrentMP3 = 0;
+					fnMusicStop();
+					iCurrentMP3 = 0;
                     mp3Files = System.IO.Directory.GetFiles(strMusicDir, @"*.mp3");
                     this.lbPlayLists.Items.Clear();
                     foreach (string p in mp3Files)
@@ -883,18 +927,27 @@ namespace KitchenTouch
 						mediaElement.Source = new Uri(mp3file, UriKind.RelativeOrAbsolute);
 						mediaElement.ToolTip = mp3file;
 						fnStatusWrite(mp3file);
+						/* 
+						 * Crude hack to get artist/album info from the path. 
+						 * This assumes that your collection is organised within the following structure
+						 * [My Music folder]\<Artist>\<Album>\<SongName.mp3>
+						 * 
+						 * TODO: Read info from ID3 tags
+						 */
+						string[] w = Regex.Split(mp3file, @"\\");
+						int i = w.Length;
+						if (i > 4)
+						{
+							lblMArtist.Content = "Artist: " + w[i - 3];
+							lblMAlbum.Content = "Album:  " + w[i - 2];
+						}
 						lblMFile.Content = "Song: " + System.IO.Path.GetFileNameWithoutExtension(mp3file);
 						mediaElement.Position = new TimeSpan();
-//						fnMusicPlay();
 					}
 					else
 					{
 						fnDebugWrite("Error: There are no MP3 files to play!");
 					}
-				}
-				else
-				{
-//					fnMusicPlay();
 				}
 			}
 			catch (Exception e)
@@ -971,16 +1024,16 @@ namespace KitchenTouch
         {
 			try
 			{
-				if (bMusicPlaying)
-				{
+				//if (bMusicPlaying)
+				//{
 					mediaElement.Stop();
 					bMusicPlaying = false;
-				}
-				if (bRadioPlaying)
-				{
+				//}
+				//if (bRadioPlaying)
+				//{
 					mediaElement2.Stop();
 					bRadioPlaying = false;
-				}
+				//}
 				fnPlayerCtrlPause();
 			}
 			catch
@@ -1264,6 +1317,9 @@ namespace KitchenTouch
 				fnSetTextBoxValue(tbRadioBtn3URL, strRadio3URL);
 				fnSetTextBoxValue(tbRadioBtn4Caption, strRadio4Caption);
 				fnSetTextBoxValue(tbRadioBtn4URL, strRadio4URL);
+				
+				//lights
+				fnSetTextBoxValue(tbAutomationURL, strAutomationURL);
 
 				//web
 				fnSetButtonCaption(btnGoWeb1, strWebSite1Caption);
@@ -1353,6 +1409,8 @@ namespace KitchenTouch
 				strWebCam3URL = cfg.sCfgWebCam3URL;
 				strWebCam4Caption = cfg.sCfgWebCam4Caption;
 				strWebCam4URL = cfg.sCfgWebCam4URL;
+				//lights
+				strAutomationURL = cfg.sCfgAutomationURL;
 				//web
 				strWebSite1Caption = cfg.sCfgWebSite1Caption;
 				strWebSite1URL = cfg.sCfgWebSite1URL;
@@ -1429,7 +1487,8 @@ namespace KitchenTouch
 				KitchenTouchConfig cfg = new KitchenTouchConfig();
 				
 				//generic
-				cfg.bCfgEnableTouchKeyboard = bEnableTouchKeyboard = (bool)chkTouchKbd.IsChecked ? true : false; ;
+				cfg.bCfgEnableTouchKeyboard = bEnableTouchKeyboard = (bool)chkTouchKbd.IsChecked ? true : false;
+				cfg.dCfgDateSaved = DateTime.Now;
 
 				//home/pictures
 				cfg.sCfgPicturesDir = strMyPicturesDir = tbDefaultPictureDir.Text;
@@ -1467,7 +1526,8 @@ namespace KitchenTouch
 
 				cfg.sCfgWebCam4Caption = strWebCam4Caption = tbWebCamBtn4Caption.Text;
 				cfg.sCfgWebCam4URL = strWebCam4URL = tbWebCamBtn4URL.Text;
-				
+				//lights
+				cfg.sCfgAutomationURL = strAutomationURL = tbAutomationURL.Text;
 				//internet
 				cfg.sCfgWebSite1Caption = strWebSite1Caption = tbInternetBtn1Caption.Text;
 				cfg.sCfgWebSite1URL = strWebSite1URL = tbInternetBtn1URL.Text;
@@ -1482,12 +1542,14 @@ namespace KitchenTouch
 
 				using (Stream s = File.Create(strConfigFile))
 					xs.Serialize(s, cfg);
-				
+
 				fnDebugWrite("fnSaveAppSettings: Settings were saved.");
+				System.Windows.MessageBox.Show("Your Settings were successfully saved.", "KitchenTouch");
 			}
 			catch (Exception ex)
 			{
 				fnDebugWrite("Error in fnSaveAppSettings: " + ex.Message);
+				System.Windows.MessageBox.Show("Your Settings could not be saved.\n\nError:" + ex.Message, "KitchenTouch", MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
 			}
 			
 		}
@@ -1644,5 +1706,6 @@ namespace KitchenTouch
 			}
 		}
 		#endregion
+
 	}
 }
