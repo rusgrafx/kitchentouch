@@ -49,6 +49,7 @@ namespace KitchenTouch
     {
 
         #region * GLOBAL CONFIG *
+		private const double dblVersion = 1.0;
 		private bool bEnableDebug = false;
 		private string strSysPicturesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 		private string strSysMusicDir = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
@@ -74,6 +75,7 @@ namespace KitchenTouch
 		public class KitchenTouchConfig
 		{
 			[XmlAttribute("Saved")]	public DateTime dCfgDateSaved;
+			[XmlAttribute("Version")] public double dblCfgVersion;
 			#region CFG Generic
 				[XmlElement("EnableTouchKeyboard")]	public bool bCfgEnableTouchKeyboard;
 			#endregion
@@ -1382,42 +1384,45 @@ namespace KitchenTouch
 				using (Stream s = File.OpenRead(strConfigFile))
 					cfg = (KitchenTouchConfig)xs.Deserialize(s);
 				
+				//TODO: Validate ALL cfg values before assigning them!
+				KTValidator v = new KTValidator();
+				
 				//gerenic
-				bEnableTouchKeyboard = cfg.bCfgEnableTouchKeyboard;
+				bEnableTouchKeyboard = v.IsBool(cfg.bCfgEnableTouchKeyboard) ? cfg.bCfgEnableTouchKeyboard : false;
 				//pictures
-				strMyPicturesDir = cfg.sCfgPicturesDir;
-				iSlideShowInterval = cfg.iCfgSlideShowInterval;
+				strMyPicturesDir = v.IsLocalPath(cfg.sCfgPicturesDir) ? cfg.sCfgPicturesDir : "";
+				iSlideShowInterval = v.IsIntRange(cfg.iCfgSlideShowInterval, 3, 60) ? cfg.iCfgSlideShowInterval : 3;
 				//music
-				strMusicDir = cfg.sCfgMusicDir;
+				strMusicDir = v.IsLocalPath(cfg.sCfgMusicDir) ? cfg.sCfgMusicDir : "";
 				strRadio1Caption = cfg.sCfgRadio1Caption;
-				strRadio1URL = cfg.sCfgRadio1URL;
+				strRadio1URL = v.IsHttpUrl(cfg.sCfgRadio1URL) ? cfg.sCfgRadio1URL : "";
 				strRadio2Caption = cfg.sCfgRadio2Caption;
-				strRadio2URL = cfg.sCfgRadio2URL;
+				strRadio2URL = v.IsHttpUrl(cfg.sCfgRadio2URL) ? cfg.sCfgRadio2URL : "";
 				strRadio3Caption = cfg.sCfgRadio3Caption;
-				strRadio3URL = cfg.sCfgRadio3URL;
+				strRadio3URL = v.IsHttpUrl(cfg.sCfgRadio3URL) ? cfg.sCfgRadio3URL : "";
 				strRadio4Caption = cfg.sCfgRadio4Caption;
-				strRadio4URL = cfg.sCfgRadio4URL;
+				strRadio4URL = v.IsHttpUrl(cfg.sCfgRadio4URL) ? cfg.sCfgRadio4URL : "";
 				//weather
-				strZipCode = cfg.sCfgZipCode;
+				strZipCode = v.IsZIP(cfg.sCfgZipCode) ? cfg.sCfgZipCode : "";
 				//cameras
-				iWebCamInterval = cfg.iCfgWebCamInterval;
+				iWebCamInterval = v.IsIntRange(cfg.iCfgWebCamInterval, 3, 60) ? cfg.iCfgWebCamInterval : 10;
 				strWebCam1Caption = cfg.sCfgWebCam1Caption;
-				strWebCam1URL = cfg.sCfgWebCam1URL;
+				strWebCam1URL = v.IsHttpUrl(cfg.sCfgWebCam1URL) ? cfg.sCfgWebCam1URL : "";
 				strWebCam2Caption = cfg.sCfgWebCam2Caption;
-				strWebCam2URL = cfg.sCfgWebCam2URL;
+				strWebCam2URL = v.IsHttpUrl(cfg.sCfgWebCam2URL) ? cfg.sCfgWebCam2URL : "";
 				strWebCam3Caption = cfg.sCfgWebCam3Caption;
-				strWebCam3URL = cfg.sCfgWebCam3URL;
+				strWebCam3URL = v.IsHttpUrl(cfg.sCfgWebCam3URL) ? cfg.sCfgWebCam3URL : "";
 				strWebCam4Caption = cfg.sCfgWebCam4Caption;
-				strWebCam4URL = cfg.sCfgWebCam4URL;
+				strWebCam4URL = v.IsHttpUrl(cfg.sCfgWebCam4URL) ? cfg.sCfgWebCam4URL : "";
 				//lights
-				strAutomationURL = cfg.sCfgAutomationURL;
+				strAutomationURL = v.IsHttpUrl(cfg.sCfgAutomationURL) ? cfg.sCfgAutomationURL : "about:blank";
 				//web
 				strWebSite1Caption = cfg.sCfgWebSite1Caption;
-				strWebSite1URL = cfg.sCfgWebSite1URL;
+				strWebSite1URL = v.IsHttpUrl(cfg.sCfgWebSite1URL) ? cfg.sCfgWebSite1URL : "";
 				strWebSite2Caption = cfg.sCfgWebSite2Caption;
-				strWebSite2URL = cfg.sCfgWebSite2URL;
+				strWebSite2URL = v.IsHttpUrl(cfg.sCfgWebSite2URL) ? cfg.sCfgWebSite2URL : "";
 				strWebSite3Caption = cfg.sCfgWebSite3Caption;
-				strWebSite3URL = cfg.sCfgWebSite3URL;
+				strWebSite3URL = v.IsHttpUrl(cfg.sCfgWebSite3URL) ? cfg.sCfgWebSite3URL : "";
 				//apply values to GUI
 				fnApplyAppSettings();
 
@@ -1425,7 +1430,7 @@ namespace KitchenTouch
 			}
 			catch (FileNotFoundException)
 			{
-				//set global defines if no config file found
+				//set defaults if no config file found
 
 				//gerenic
 				bEnableTouchKeyboard = false;
@@ -1438,10 +1443,10 @@ namespace KitchenTouch
 				strRadio1URL = "http://bb.1.fm/bbfm32k";
 				strRadio2Caption = "DeSi RaDiO";
 				strRadio2URL = "http://www.desi-radio.com/servers/desiradio.m3u";
-				strRadio3Caption = "Bollywood Music Radio";
+				strRadio3Caption = "Bollywood";
 				strRadio3URL = "http://stream.bollywoodmusicradio.com/";
-				strRadio4Caption = "Radio Nimbooda";
-				strRadio4URL = "http://87.98.216.140";
+				strRadio4Caption = "NovoeRadio";
+				strRadio4URL = "http://s5.viastreaming.net/cgi-bin/scproxy.cgi?port=7020";
 				//weather
 				strZipCode = "94568";
 				//cameras
@@ -1454,6 +1459,8 @@ namespace KitchenTouch
 				strWebCam3URL = "";
 				strWebCam4Caption = "";
 				strWebCam4URL = "";
+				//lights
+				strAutomationURL = "about:blank";
 				//web
 				strWebSite1Caption = "Odnoklassniki";
 				strWebSite1URL = "http://m.odnoklassniki.ru";
@@ -1461,6 +1468,7 @@ namespace KitchenTouch
 				strWebSite2URL = "http://cnn.com";
 				strWebSite3Caption = "Yahoo! mobile";
 				strWebSite3URL = "http://m.yahoo.com";
+
 				//apply values to GUI
 				fnApplyAppSettings();
 				//navigate to Setting pane to let user customize the app
@@ -1487,6 +1495,7 @@ namespace KitchenTouch
 				KitchenTouchConfig cfg = new KitchenTouchConfig();
 				
 				//generic
+				cfg.dblCfgVersion = dblVersion;
 				cfg.bCfgEnableTouchKeyboard = bEnableTouchKeyboard = (bool)chkTouchKbd.IsChecked ? true : false;
 				cfg.dCfgDateSaved = DateTime.Now;
 
@@ -1526,8 +1535,10 @@ namespace KitchenTouch
 
 				cfg.sCfgWebCam4Caption = strWebCam4Caption = tbWebCamBtn4Caption.Text;
 				cfg.sCfgWebCam4URL = strWebCam4URL = tbWebCamBtn4URL.Text;
+				
 				//lights
 				cfg.sCfgAutomationURL = strAutomationURL = tbAutomationURL.Text;
+				
 				//internet
 				cfg.sCfgWebSite1Caption = strWebSite1Caption = tbInternetBtn1Caption.Text;
 				cfg.sCfgWebSite1URL = strWebSite1URL = tbInternetBtn1URL.Text;
