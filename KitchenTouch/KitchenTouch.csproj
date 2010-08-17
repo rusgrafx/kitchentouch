@@ -127,6 +127,7 @@
     <Compile Include="TouchKeyboard.xaml.cs">
       <DependentUpon>TouchKeyboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="KTValidator.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
