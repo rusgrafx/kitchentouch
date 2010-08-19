@@ -19,7 +19,7 @@
     <ManifestKeyFile>
     </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>WLHome.ico</ApplicationIcon>
     <PublishUrl>E:\projects_rus\publish\</PublishUrl>
