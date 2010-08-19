@@ -27,10 +27,10 @@
 		</StatusBar>
 		
 		<TabControl Name="tabNavi" Grid.Row="1">
-			<TabItem Name="tabHome" ToolTip="Home" Padding="2" IsSelected="True">
+			<TabItem Name="tabHome" Padding="2" IsSelected="True">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
-						<Image Width="70" Source="/KitchenTouch;component/Resources/home2.png" HorizontalAlignment="Center" />
+						<Image Width="70" Source="/KitchenTouch;component/Resources/home2.png" HorizontalAlignment="Center" ToolTip="Home" />
 						<!-- Label Width="60" HorizontalContentAlignment="Center">Home</Label -->
 					</StackPanel>
 				</TabItem.Header>
@@ -76,10 +76,10 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabCalendar" ToolTip="Calendar" Padding="2">
+			<TabItem Name="tabCalendar" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
-						<Image Width="70" Source="/KitchenTouch;component/Resources/calendar.png" HorizontalAlignment="Center" />
+						<Image Width="70" Source="/KitchenTouch;component/Resources/calendar.png" HorizontalAlignment="Center" ToolTip="Calendar" />
 						<!-- Label Width="60" HorizontalContentAlignment="Center">Calendar</Label -->
 					</StackPanel>
 				</TabItem.Header>
@@ -91,10 +91,10 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabWeather" ToolTip="Weather" Padding="2">
+			<TabItem Name="tabWeather" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
-						<Image Width="70" Source="/KitchenTouch;component/Resources/weathercouldsun.png" HorizontalAlignment="Center" />
+						<Image Width="70" Source="/KitchenTouch;component/Resources/weathercouldsun.png" HorizontalAlignment="Center" ToolTip="Weather" />
 						<!-- Label Width="60" HorizontalContentAlignment="Center">Weather</Label -->
 					</StackPanel>
 				</TabItem.Header>
@@ -119,10 +119,10 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabCameras" ToolTip="Cameras" Padding="2">
+			<TabItem Name="tabCameras" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
-						<Image Width="70" Source="/KitchenTouch;component/Resources/photo.png" HorizontalAlignment="Center" />
+						<Image Width="70" Source="/KitchenTouch;component/Resources/photo.png" HorizontalAlignment="Center" ToolTip="Cameras" />
 						<!-- Label Width="60" HorizontalContentAlignment="Center">Cameras</Label -->
 					</StackPanel>
 				</TabItem.Header>
@@ -150,10 +150,10 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabLights" ToolTip="Lights" Padding="2">
+			<TabItem Name="tabLights" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
-						<Image Width="70" Source="/KitchenTouch;component/Resources/light.png" HorizontalAlignment="Center" />
+						<Image Width="70" Source="/KitchenTouch;component/Resources/light.png" HorizontalAlignment="Center" ToolTip="Lights" />
 						<!-- Label Width="60" HorizontalContentAlignment="Center">Lights</Label -->
 					</StackPanel>
 				</TabItem.Header>
@@ -165,10 +165,10 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabBrowser" ToolTip="Web" Padding="2">
+			<TabItem Name="tabBrowser" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
-						<Image Width="70" Source="/KitchenTouch;component/Resources/globe.png" HorizontalAlignment="Center" />
+						<Image Width="70" Source="/KitchenTouch;component/Resources/globe.png" HorizontalAlignment="Center" ToolTip="Web" />
 						<!-- Label Width="60" HorizontalContentAlignment="Center">Internet</Label -->
 					</StackPanel>
 				</TabItem.Header>
@@ -216,10 +216,10 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabMusic" ToolTip="Music" Padding="2">
+			<TabItem Name="tabMusic" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
-						<Image Width="70" Source="/KitchenTouch;component/Resources/music.png" HorizontalAlignment="Center" />
+						<Image Width="70" Source="/KitchenTouch;component/Resources/music.png" HorizontalAlignment="Center" ToolTip="Music" />
 						<!-- Label Width="60" HorizontalContentAlignment="Center">Music</Label -->
 					</StackPanel>
 				</TabItem.Header>
@@ -307,10 +307,10 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
-			<TabItem Name="tabiSettings" ToolTip="Settings" Padding="2">
+			<TabItem Name="tabiSettings" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
-						<Image Width="70" Source="/KitchenTouch;component/Resources/gear.png" HorizontalAlignment="Center" />
+						<Image Width="70" Source="/KitchenTouch;component/Resources/gear.png" HorizontalAlignment="Center" ToolTip="Settings" />
 						<!-- Label Width="60" HorizontalContentAlignment="Center">Settings</Label -->
 					</StackPanel>
 				</TabItem.Header>
