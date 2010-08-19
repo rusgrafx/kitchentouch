@@ -286,7 +286,7 @@ namespace KitchenTouch
 				string msg = "Window size: " + this.Width + "x" + this.Height;
 				lblStatusResolution.Content = msg;
 				fnDebugWrite(msg);
-				this.Title = msg;
+				//this.Title = msg;
 			}
 			catch
 			{
@@ -1718,5 +1718,43 @@ namespace KitchenTouch
 		}
 		#endregion
 
+		private void fnSelectFolder(object sender, RoutedEventArgs e)
+		{
+			System.Windows.Controls.Button btn = (System.Windows.Controls.Button)e.OriginalSource;
+			System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+
+			switch (btn.Name)
+			{
+				case "btnPictureDir":
+					folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyPictures;
+					break;
+				case "btnMusicDir":
+					folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyMusic;
+					break;
+				default:
+					folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
+					break;
+			}
+			
+			folderBrowserDialog.ShowNewFolderButton = false;
+			folderBrowserDialog.Description = "Please select the folder.";
+				
+			DialogResult dr = folderBrowserDialog.ShowDialog();
+			if (dr == System.Windows.Forms.DialogResult.OK)
+			{
+				string foldername = folderBrowserDialog.SelectedPath;
+				switch (btn.Name)
+				{
+					case "btnPictureDir":
+						tbDefaultPictureDir.Text = strMyPicturesDir = foldername;
+						break;
+					case "btnMusicDir":
+						tbDefaultMusicDir.Text = strMusicDir = foldername;
+						break;
+					default:
+						break;
+				}
+			}
+		}
 	}
 }

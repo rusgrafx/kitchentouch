@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KitchenTouch.KTMainWindow"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Title="Welcome to Ulanov's Home" Name="KTWindow" 
+	Title="KitchenTouch" Name="KTWindow" 
 	ResizeMode="CanResize" WindowStyle="None" Style="{StaticResource WindowStyle}"
 	MinWidth="800" MinHeight="600" Width="1024" Height="768" Left="0" Top="0"
 	Topmost="False" SnapsToDevicePixels="True" Visibility="Visible"
@@ -345,7 +345,7 @@
 										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 											<Label Width="150" Margin="5" VerticalAlignment="Center" Style="{StaticResource LabelStyle}">Default SlideShow folder:</Label>
 											<TextBox Name="tbDefaultPictureDir" MinWidth="265" Margin="5" VerticalAlignment="Center"></TextBox>
-											<Button Width="32" Height="32" Margin="5" ToolTip="Select folder">
+											<Button Name="btnPictureDir" Width="32" Height="32" Margin="5" ToolTip="Select folder" Click="fnSelectFolder">
 												<Image Source="/KitchenTouch;component/Resources/folder2.png" />
 											</Button>
 										</StackPanel>
@@ -469,7 +469,7 @@
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 												<Label Margin="5" Width="150" VerticalAlignment="Center" Style="{StaticResource LabelStyle}">Default Music folder:</Label>
 												<TextBox Name="tbDefaultMusicDir" MinWidth="265" Margin="5" VerticalAlignment="Center"></TextBox>
-												<Button Width="32" Height="32" Margin="5" ToolTip="Select folder">
+												<Button Name="btnMusicDir" Width="32" Height="32" Margin="5" ToolTip="Select folder" Click="fnSelectFolder">
 													<Image Source="/KitchenTouch;component/Resources/folder2.png" />
 												</Button>
 											</StackPanel>
