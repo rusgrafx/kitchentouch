@@ -21,6 +21,7 @@
 
 using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,6 +68,8 @@ namespace KitchenTouch
 		private double R = 100;
 		private double G = 80;
 		private double B = 100;
+		private ArrayList arrFilesFound = new ArrayList();
+		private ArrayList arrPlaylists = new ArrayList();
 		#endregion
 
 		#region * USER CONFIG *
@@ -226,6 +229,12 @@ namespace KitchenTouch
 			{
 				tabLights.Visibility = Visibility.Collapsed;
 			}
+			
+			//populate Playlists in the Music Library
+			fnGetFilesRecursive(strSysMusicDir, @"*.m3u");
+			arrPlaylists = arrFilesFound;
+			//arrFilesFound = new string[0]; //clean array for next use
+			//arrPlaylists = System.IO.Directory.GetFiles(strSysMusicDir, @"*.wpl|*.m3u");
         }
 
         private void lblWelcome_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -310,6 +319,39 @@ namespace KitchenTouch
             }
             return bi;
         }
+
+		#region * GET RECURSIVE FILE LIST *
+		/// <summary>
+		/// Retrieves a list of files using a wildcard and stores it 
+		/// in arrFilesFound
+		/// </summary>
+		/// <param name="sDir">Root folder</param>
+		/// <param name="sExt">Files wildcard</param>
+		private void fnGetFilesRecursive(string sDir, string sExt)
+		{
+			try
+			{
+				this.Cursor = System.Windows.Input.Cursors.Wait;
+				foreach (string d in Directory.GetDirectories(sDir))
+				{
+					foreach (string f in Directory.GetFiles(d, sExt))
+					{
+						this.arrFilesFound.Add(f);
+					}
+					fnGetFilesRecursive(d, sExt);
+				}
+			}
+			catch (System.Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+			finally
+			{
+				this.Cursor = System.Windows.Input.Cursors.Arrow;
+			}
+		}
+		#endregion;
+
         #endregion
 
         #region * CLOCK WORKS *
@@ -815,6 +857,19 @@ namespace KitchenTouch
 				btnMVolUp.Visibility = this.Width >= 1023 ? Visibility.Visible : Visibility.Collapsed;
 				fnGetMusic(false);
 				//CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
+
+				this.lbMLib.Items.Clear();
+				if (this.arrPlaylists.Count > 0)
+				{
+					foreach (string p in this.arrPlaylists)
+					{
+						this.lbMLib.Items.Add(System.IO.Path.GetFileNameWithoutExtension(p));
+					}
+				}
+				else
+				{
+					this.lbMLib.Items.Add("No playlists were found in " + strSysMusicDir);
+				}
 			}
 			catch
 			{
@@ -835,6 +890,19 @@ namespace KitchenTouch
 				fnMusicLoad();
 				fnMusicPlay();
 				fnDebugWrite("Selected index: " + lbPlayLists.SelectedIndex);
+			}
+			catch
+			{
+			}
+		}
+
+		private void lbMLib_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			try
+			{
+				fnMusicStop();
+				fnPlaylistPlay(lbMLib.SelectedIndex);
+				fnDebugWrite("Selected playlist index: " + lbMLib.SelectedIndex);
 			}
 			catch
 			{
@@ -945,6 +1013,52 @@ namespace KitchenTouch
 						}
 						lblMFile.Content = "Song: " + System.IO.Path.GetFileNameWithoutExtension(mp3file);
 						mediaElement.Position = new TimeSpan();
+					}
+					else
+					{
+						fnDebugWrite("Error: There are no MP3 files to play!");
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				fnDebugWrite("Error: " + e.Message);
+			}
+		}
+
+		private void fnPlaylistPlay(int iCurrent)
+		{
+			try
+			{
+				if (true)
+				{
+					string plsFile = arrPlaylists[iCurrent].ToString();
+					if (plsFile != null)
+					{
+						mediaElement2.Source = new Uri(plsFile, UriKind.RelativeOrAbsolute);
+						mediaElement2.ToolTip = lblMFile.Content = "Playlist: " + plsFile;
+						fnStatusWrite("Playlist: " + plsFile);
+						/* 
+						 * Crude hack to get artist/album info from the path. 
+						 * This assumes that your collection is organised within the following structure
+						 * [My Music folder]\<Artist>\<Album>\<SongName.mp3>
+						 * 
+						 * TODO: Read info from ID3 tags
+						 
+						string[] w = Regex.Split(mp3file, @"\\");
+						int i = w.Length;
+						if (i > 4)
+						{
+							lblMArtist.Content = "Artist: " + w[i - 3];
+							lblMAlbum.Content = "Album:  " + w[i - 2];
+						}
+						lblMFile.Content = "Song: " + System.IO.Path.GetFileNameWithoutExtension(mp3file);
+						*/
+						mediaElement2.Position = new TimeSpan();
+						mediaElement2.Play();
+						bRadioPlaying = true;
+						//bMusicPlaying = true;
+						fnPlayerCtrlPlay();
 					}
 					else
 					{
@@ -1224,9 +1338,18 @@ namespace KitchenTouch
         {
 			try
 			{
-				double vol = mediaElement.Volume + 0.1;
-				mediaElement.Volume = (double)Math.Min(1.0, vol);
-				fnDebugWrite("Volume: " + mediaElement.Volume * 100);
+				if (bMusicPlaying)
+				{
+					double vol = mediaElement.Volume + 0.1;
+					mediaElement.Volume = (double)Math.Min(1.0, vol);
+					fnDebugWrite("Volume: " + mediaElement.Volume * 100);
+				}
+				if (bRadioPlaying)
+				{
+					double vol = mediaElement2.Volume + 0.1;
+					mediaElement2.Volume = (double)Math.Min(1.0, vol);
+					fnDebugWrite("Volume: " + mediaElement2.Volume * 100);
+				}
 			}
 			catch
 			{
@@ -1237,9 +1360,18 @@ namespace KitchenTouch
         {
 			try
 			{
-				double vol = mediaElement.Volume - 0.1;
-				mediaElement.Volume = (double)Math.Max(0.0, vol);
-				fnDebugWrite("Volume: " + mediaElement.Volume * 100);
+				if (bMusicPlaying)
+				{
+					double vol = mediaElement.Volume - 0.1;
+					mediaElement.Volume = (double)Math.Max(0.0, vol);
+					fnDebugWrite("Volume: " + mediaElement.Volume * 100);
+				}
+				if (bRadioPlaying)
+				{
+					double vol = mediaElement2.Volume - 0.1;
+					mediaElement2.Volume = (double)Math.Max(0.0, vol);
+					fnDebugWrite("Volume: " + mediaElement2.Volume * 100);
+				}
 			}
 			catch
 			{
@@ -1473,6 +1605,7 @@ namespace KitchenTouch
 				fnApplyAppSettings();
 				//navigate to Setting pane to let user customize the app
 				tabiSettings.IsSelected = true;
+				gbWelcomeMessage.Visibility = Visibility.Visible;
 
 				fnDebugWrite("Config file not found! Loaded default settings.");
 			}
@@ -1555,6 +1688,7 @@ namespace KitchenTouch
 					xs.Serialize(s, cfg);
 
 				fnDebugWrite("fnSaveAppSettings: Settings were saved.");
+				gbWelcomeMessage.Visibility = Visibility.Collapsed;
 				System.Windows.MessageBox.Show("Your Settings were successfully saved.", "KitchenTouch");
 			}
 			catch (Exception ex)
@@ -1718,6 +1852,7 @@ namespace KitchenTouch
 		}
 		#endregion
 
+		#region * FOLDER SELECTION DIALOG *
 		private void fnSelectFolder(object sender, RoutedEventArgs e)
 		{
 			System.Windows.Controls.Button btn = (System.Windows.Controls.Button)e.OriginalSource;
@@ -1756,5 +1891,7 @@ namespace KitchenTouch
 				}
 			}
 		}
+		#endregion;
+
 	}
 }
