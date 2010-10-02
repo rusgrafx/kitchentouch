@@ -246,7 +246,7 @@
 								<TabItem Name="tabiMLib" Header="Library" FontSize="24">
 									<TabPanel Name="tabpMLib" Loaded="tabpMLib_Loaded" Style="{StaticResource TabPanelStyle}">
 										<Border BorderThickness="0" BorderBrush="Gray" Margin="0">
-											<ListBox Name="lbMLib" Margin="0" FontSize="24" Background="WhiteSmoke">
+											<ListBox Name="lbMLib" Margin="0" FontSize="24" Background="WhiteSmoke" SelectionChanged="lbMLib_SelectionChanged">
 												<ListBoxItem>Library is under construction...</ListBoxItem>
 											</ListBox>
 										</Border>
@@ -318,6 +318,24 @@
 					<Grid Margin="0">
 						<ScrollViewer Name="svSettings" HorizontalAlignment="Left" MinWidth="700" VerticalScrollBarVisibility="Auto" IsTabStop="True">
 							<StackPanel HorizontalAlignment="Left" Margin="5" CanVerticallyScroll="True">
+
+								<GroupBox Style="{StaticResource GroupBoxStyle}" Name="gbWelcomeMessage" Visibility="Collapsed">
+									<GroupBox.Header>
+										<Label Style="{StaticResource LabelStyle}">Welcome to KitchenTouch!</Label>
+									</GroupBox.Header>
+									<StackPanel Name="lblFirstStart" Orientation="Horizontal" HorizontalAlignment="Left">
+										<Border Margin="5">
+											<TextBlock Width="760" FontSize="16" TextWrapping="Wrap" Padding="5" LineHeight="Auto" FontStretch="UltraExpanded">
+												<Run>The configuration file was not found in the app's folder, so this might be your first launch of KitchenTouch application.</Run>
+												<Run>Please look through the options on this screen and set them to your liking. When done, just click the 'Apply/Save Settings' button.</Run>
+												<Run>You can always return to this screen later if you'd want to make any changes.</Run>
+												<LineBreak/><LineBreak/>
+												<Run>Note: You might have to restart this application (not the Windows) for some of the changes to take effect.</Run>
+											</TextBlock>
+										</Border>
+									</StackPanel>
+								</GroupBox>
+
 								<GroupBox Style="{StaticResource GroupBoxStyle}">
 									<GroupBox.Header>
 										<Label Style="{StaticResource LabelStyle}">Generic (not saved)</Label>
@@ -343,7 +361,7 @@
 									</GroupBox.Header>
 									<StackPanel>
 										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-											<Label Width="150" Margin="5" VerticalAlignment="Center" Style="{StaticResource LabelStyle}">Default SlideShow folder:</Label>
+											<Label Width="150" Margin="5" VerticalAlignment="Center" Style="{StaticResource LabelStyle}">SlideShow folder:</Label>
 											<TextBox Name="tbDefaultPictureDir" MinWidth="265" Margin="5" VerticalAlignment="Center"></TextBox>
 											<Button Name="btnPictureDir" Width="32" Height="32" Margin="5" ToolTip="Select folder" Click="fnSelectFolder">
 												<Image Source="/KitchenTouch;component/Resources/folder2.png" />
