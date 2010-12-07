@@ -76,6 +76,7 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
+			
 			<TabItem Name="tabCalendar" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
@@ -91,6 +92,7 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
+			
 			<TabItem Name="tabWeather" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
@@ -119,6 +121,7 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
+			
 			<TabItem Name="tabCameras" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
@@ -150,6 +153,7 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
+			
 			<TabItem Name="tabLights" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
@@ -165,6 +169,7 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
+			
 			<TabItem Name="tabBrowser" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
@@ -216,6 +221,7 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
+			
 			<TabItem Name="tabMusic" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
@@ -307,6 +313,7 @@
 					</Grid>
 				</TabPanel>
 			</TabItem>
+			
 			<TabItem Name="tabiSettings" Padding="2">
 				<TabItem.Header>
 					<StackPanel Width="70" Margin="0">
@@ -323,17 +330,15 @@
 									<GroupBox.Header>
 										<Label Style="{StaticResource LabelStyle}">Welcome to KitchenTouch!</Label>
 									</GroupBox.Header>
-									<StackPanel Name="lblFirstStart" Orientation="Horizontal" HorizontalAlignment="Left">
-										<Border Margin="5">
-											<TextBlock Width="760" FontSize="16" TextWrapping="Wrap" Padding="5" LineHeight="Auto" FontStretch="UltraExpanded">
+									<ScrollViewer Name="lblFirstStart" VerticalScrollBarVisibility="Auto">
+										<TextBlock FontSize="16" TextWrapping="Wrap" Padding="5" LineHeight="Auto" FontStretch="UltraExpanded">
 												<Run>The configuration file was not found in the app's folder, so this might be your first launch of KitchenTouch application.</Run>
 												<Run>Please look through the options on this screen and set them to your liking. When done, just click the 'Apply/Save Settings' button.</Run>
-												<Run>You can always return to this screen later if you'd want to make any changes.</Run>
+												<Run>You can always return to this screen later if you decide to make any changes.</Run>
 												<LineBreak/><LineBreak/>
 												<Run>Note: You might have to restart this application (not the Windows) for some of the changes to take effect.</Run>
 											</TextBlock>
-										</Border>
-									</StackPanel>
+									</ScrollViewer>
 								</GroupBox>
 
 								<GroupBox Style="{StaticResource GroupBoxStyle}">
@@ -380,23 +385,40 @@
 										</StackPanel>
 									</StackPanel>
 								</GroupBox>
+
 								<GroupBox Style="{StaticResource GroupBoxStyle}">
 									<GroupBox.Header>
-										<Label Style="{StaticResource LabelStyle}">Weather</Label>
+										<CheckBox Name="cbCalendarEnabled" Click="cbCalendarEnabled_Click">
+											<Label Style="{StaticResource LabelStyle}">Calendar</Label>
+										</CheckBox>
 									</GroupBox.Header>
-									<StackPanel>
+									<StackPanel Name="boxSettingsCalendar">
+										<Label Style="{StaticResource LabelStyle}">No settings to configure</Label>
+									</StackPanel>
+								</GroupBox>
+								
+								<GroupBox Style="{StaticResource GroupBoxStyle}">
+									<GroupBox.Header>
+											<CheckBox Name="cbWeatherEnabled" Click="cbWeatherEnabled_Click">
+												<Label Style="{StaticResource LabelStyle}">Weather</Label>
+											</CheckBox>
+									</GroupBox.Header>
+									<StackPanel Name="boxSettingsWeather">
 										<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 											<Label Width="150" Margin="5" Style="{StaticResource LabelStyle}">Zip code:</Label>
 											<TextBox Name="tbZip" Width="60" Margin="5" TextAlignment="Center">94568</TextBox>
 										</StackPanel>
 									</StackPanel>
 								</GroupBox>
+								
 								<GroupBox Style="{StaticResource GroupBoxStyle}">
 									<GroupBox.Header>
-										<Label Style="{StaticResource LabelStyle}">Cameras</Label>
+										<CheckBox Name="cbCamerasEnabled" Click="cbCamerasEnabled_Click">
+											<Label Style="{StaticResource LabelStyle}">Cameras</Label>
+										</CheckBox>
 									</GroupBox.Header>
 									<GroupItem>
-										<StackPanel>
+										<StackPanel Name="boxSettingsCameras">
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">WebCam #1 Title:</Label>
 												<TextBox Name="tbWebCamBtn1Caption" MinWidth="265" Margin="5"></TextBox>
@@ -432,21 +454,27 @@
 										</StackPanel>
 									</GroupItem>
 								</GroupBox>
+								
 								<GroupBox Style="{StaticResource GroupBoxStyle}">
 									<GroupBox.Header>
-										<Label Style="{StaticResource LabelStyle}">Lights/Home Automation</Label>
+										<CheckBox Name="cbLightsEnabled" Click="cbLightsEnabled_Click">
+											<Label Style="{StaticResource LabelStyle}">Lights/Home Automation</Label>
+										</CheckBox>
 									</GroupBox.Header>
-									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+									<StackPanel Name="boxSettingsLights" HorizontalAlignment="Left" Orientation="Horizontal">
 										<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Controller's URL:</Label>
 										<TextBox Name="tbAutomationURL" MinWidth="265" Margin="5"></TextBox>
 									</StackPanel>
 								</GroupBox>
+								
 								<GroupBox Style="{StaticResource GroupBoxStyle}">
 									<GroupBox.Header>
-										<Label Style="{StaticResource LabelStyle}">Internet</Label>
+										<CheckBox Name="cbBrowserEnabled" Click="cbBrowserEnabled_Click">
+											<Label Style="{StaticResource LabelStyle}">Internet</Label>
+										</CheckBox>
 									</GroupBox.Header>
 									<GroupItem>
-										<StackPanel>
+										<StackPanel Name="boxSettingsBrowser">
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 												<Label Margin="5" Width="150" Style="{StaticResource LabelStyle}">Home URL:</Label>
 												<TextBox Name="tbInternetBtn0URL" MinWidth="450" Margin="5" IsEnabled="False" Focusable="False" IsTabStop="False">http://google.com</TextBox>
@@ -478,12 +506,15 @@
 										</StackPanel>
 									</GroupItem>
 								</GroupBox>
+								
 								<GroupBox Style="{StaticResource GroupBoxStyle}">
 									<GroupBox.Header>
-										<Label Style="{StaticResource LabelStyle}">Music</Label>
+										<CheckBox Name="cbMusicEnabled" Click="cbMusicEnabled_Click">
+											<Label Style="{StaticResource LabelStyle}">Music</Label>
+										</CheckBox>
 									</GroupBox.Header>
 									<GroupItem>
-										<StackPanel>
+										<StackPanel Name="boxSettingsMusic">
 											<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 												<Label Margin="5" Width="150" VerticalAlignment="Center" Style="{StaticResource LabelStyle}">Default Music folder:</Label>
 												<TextBox Name="tbDefaultMusicDir" MinWidth="265" Margin="5" VerticalAlignment="Center"></TextBox>
