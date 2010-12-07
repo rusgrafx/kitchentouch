@@ -6,7 +6,7 @@
 		<Style x:Key="WindowStyle">
 			<Setter Property="Window.Background">
 				<Setter.Value>
-					<LinearGradientBrush EndPoint="1,0">
+					<LinearGradientBrush EndPoint="3,0">
 						<GradientStop Color="Black" />
 						<GradientStop Color="DarkTurquoise" Offset="1" />
 					</LinearGradientBrush>
@@ -36,7 +36,7 @@
 			<Setter Property="Label.Foreground" Value="Whitesmoke" />
 			<Setter Property="Label.BitmapEffect">
 				<Setter.Value>
-					<DropShadowBitmapEffect Color="White" ShadowDepth="2" Softness="0.3" />
+					<DropShadowBitmapEffect Color="DarkTurquoise" ShadowDepth="2" Softness="0.2" />
 				</Setter.Value>
 			</Setter>
 		</Style>

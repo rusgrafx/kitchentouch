@@ -57,7 +57,7 @@ namespace KitchenTouch
 		//private string strSysDocumentsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 		private string strConfigFile = "KitchenTouch.xml";
         private string strPlayBtnUrl = "pack://application:,,,/Resources/playerplay.png";
-        private string strStopBtnUrl = "pack://application:,,,/Resources/playerstop.png";
+        //private string strStopBtnUrl = "pack://application:,,,/Resources/playerstop.png";
 		private string strPauseBtnUrl = "pack://application:,,,/Resources/playerpause.png";
         private string strRadioAlbumArt = "pack://application:,,,/Resources/kajol.jpg";
 		// internet browser
@@ -90,6 +90,7 @@ namespace KitchenTouch
 			#endregion
 			
 			#region CFG Music
+				[XmlElement("MusicEnabled")] public bool bCfgMusicEnabled;
 				[XmlElement("MusicDir")] public string sCfgMusicDir;
 
 				[XmlElement("Radio1Caption")] public string sCfgRadio1Caption;
@@ -106,6 +107,7 @@ namespace KitchenTouch
 			#endregion
 			
 			#region CFG Webcams
+				[XmlElement("WebCamEnabled")] public bool bCfgWebCamEnabled;
 				[XmlElement("WebCamInterval")] public int iCfgWebCamInterval;
 
 				[XmlElement("WebCam1Caption")] public string sCfgWebCam1Caption;
@@ -122,10 +124,12 @@ namespace KitchenTouch
 			#endregion
 			
 			#region CFG Lights
+				[XmlElement("AutomationEnabled")] public bool bCfgAutomationEnabled;
 				[XmlElement("AutomationURL")] public string sCfgAutomationURL;
 			#endregion
 
 			#region CFG Internet
+				[XmlElement("BrowserEnabled")]	public bool bCfgBrowserEnabled;
 				[XmlElement("WebSite1Caption")]  public string sCfgWebSite1Caption;
 				[XmlElement("WebSite1URL")] public string sCfgWebSite1URL;
 
@@ -137,7 +141,12 @@ namespace KitchenTouch
 			#endregion
 
 			#region CFG Weather
+				[XmlElement("WeatherEnabled")]	public bool bCfgWeatherEnabled;
 				[XmlElement("ZipCode")] public string sCfgZipCode;
+			#endregion
+
+			#region CFG Calendar
+				[XmlElement("CalendarEnabled")] public bool bCfgCalendarEnabled;
 			#endregion
 		}
 
@@ -1420,7 +1429,13 @@ namespace KitchenTouch
 				fnSetTextBoxValue(tbDefaultPictureDir, strMyPicturesDir);
 				fnSetTextBoxValue(tbSlideShowDelay,iSlideShowInterval.ToString());
 
+				//calendar
+				tabCalendar.Visibility = (cbCalendarEnabled.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
+				boxSettingsCalendar.IsEnabled = (bool)cbCalendarEnabled.IsChecked;
+
 				//cameras
+				tabCameras.Visibility = (cbCamerasEnabled.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
+				boxSettingsCameras.IsEnabled = (bool)cbCamerasEnabled.IsChecked;
 				fnSetButtonCaption(btnWebCam1, strWebCam1Caption);
 				fnSetButtonCaption(btnWebCam2, strWebCam2Caption);
 				fnSetButtonCaption(btnWebCam3, strWebCam3Caption);
@@ -1436,6 +1451,8 @@ namespace KitchenTouch
 				fnSetTextBoxValue(tbWebCamBtn4URL, strWebCam4URL);
 				
 				//music
+				tabMusic.Visibility = (cbMusicEnabled.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
+				boxSettingsMusic.IsEnabled = (bool)cbMusicEnabled.IsChecked;
 				fnSetTextBoxValue(tbDefaultMusicDir, strMusicDir);
 
 				fnSetButtonCaption(btnMRadio1, strRadio1Caption);
@@ -1453,9 +1470,13 @@ namespace KitchenTouch
 				fnSetTextBoxValue(tbRadioBtn4URL, strRadio4URL);
 				
 				//lights
+				tabLights.Visibility = (cbLightsEnabled.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
+				boxSettingsLights.IsEnabled = (bool)cbLightsEnabled.IsChecked;
 				fnSetTextBoxValue(tbAutomationURL, strAutomationURL);
 
 				//web
+				tabBrowser.Visibility = (cbBrowserEnabled.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
+				boxSettingsBrowser.IsEnabled = (bool)cbBrowserEnabled.IsChecked;
 				fnSetButtonCaption(btnGoWeb1, strWebSite1Caption);
 				fnSetButtonCaption(btnGoWeb2, strWebSite2Caption);
 				fnSetButtonCaption(btnGoWeb3, strWebSite3Caption);
@@ -1466,6 +1487,11 @@ namespace KitchenTouch
 				fnSetTextBoxValue(tbInternetBtn2URL, strWebSite2URL);
 				fnSetTextBoxValue(tbInternetBtn3Caption, strWebSite3Caption);
 				fnSetTextBoxValue(tbInternetBtn3URL, strWebSite3URL);
+
+				//weather
+				tabWeather.Visibility = (cbWeatherEnabled.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
+				boxSettingsWeather.IsEnabled = (bool)cbWeatherEnabled.IsChecked;
+
 			}
 			catch
 			{
@@ -1524,7 +1550,10 @@ namespace KitchenTouch
 				//pictures
 				strMyPicturesDir = v.IsLocalPath(cfg.sCfgPicturesDir) ? cfg.sCfgPicturesDir : "";
 				iSlideShowInterval = v.IsIntRange(cfg.iCfgSlideShowInterval, 3, 60) ? cfg.iCfgSlideShowInterval : 3;
+				//calendar
+				cbCalendarEnabled.IsChecked = v.IsBool(cfg.bCfgCalendarEnabled) ? cfg.bCfgCalendarEnabled : false;
 				//music
+				cbMusicEnabled.IsChecked = v.IsBool(cfg.bCfgMusicEnabled) ? cfg.bCfgMusicEnabled : false;
 				strMusicDir = v.IsLocalPath(cfg.sCfgMusicDir) ? cfg.sCfgMusicDir : "";
 				strRadio1Caption = cfg.sCfgRadio1Caption;
 				strRadio1URL = v.IsHttpUrl(cfg.sCfgRadio1URL) ? cfg.sCfgRadio1URL : "";
@@ -1535,8 +1564,10 @@ namespace KitchenTouch
 				strRadio4Caption = cfg.sCfgRadio4Caption;
 				strRadio4URL = v.IsHttpUrl(cfg.sCfgRadio4URL) ? cfg.sCfgRadio4URL : "";
 				//weather
+				cbWeatherEnabled.IsChecked = v.IsBool(cfg.bCfgWeatherEnabled) ? cfg.bCfgWeatherEnabled : false;
 				strZipCode = v.IsZIP(cfg.sCfgZipCode) ? cfg.sCfgZipCode : "";
 				//cameras
+				cbCamerasEnabled.IsChecked = v.IsBool(cfg.bCfgWebCamEnabled) ? cfg.bCfgWebCamEnabled : false;
 				iWebCamInterval = v.IsIntRange(cfg.iCfgWebCamInterval, 3, 60) ? cfg.iCfgWebCamInterval : 10;
 				strWebCam1Caption = cfg.sCfgWebCam1Caption;
 				strWebCam1URL = v.IsHttpUrl(cfg.sCfgWebCam1URL) ? cfg.sCfgWebCam1URL : "";
@@ -1547,8 +1578,10 @@ namespace KitchenTouch
 				strWebCam4Caption = cfg.sCfgWebCam4Caption;
 				strWebCam4URL = v.IsHttpUrl(cfg.sCfgWebCam4URL) ? cfg.sCfgWebCam4URL : "";
 				//lights
+				cbLightsEnabled.IsChecked = v.IsBool(cfg.bCfgAutomationEnabled) ? cfg.bCfgAutomationEnabled : false;
 				strAutomationURL = v.IsHttpUrl(cfg.sCfgAutomationURL) ? cfg.sCfgAutomationURL : "about:blank";
 				//web
+				cbBrowserEnabled.IsChecked = v.IsBool(cfg.bCfgBrowserEnabled) ? cfg.bCfgBrowserEnabled : false;
 				strWebSite1Caption = cfg.sCfgWebSite1Caption;
 				strWebSite1URL = v.IsHttpUrl(cfg.sCfgWebSite1URL) ? cfg.sCfgWebSite1URL : "";
 				strWebSite2Caption = cfg.sCfgWebSite2Caption;
@@ -1636,7 +1669,11 @@ namespace KitchenTouch
 				cfg.sCfgPicturesDir = strMyPicturesDir = tbDefaultPictureDir.Text;
 				cfg.iCfgSlideShowInterval = iSlideShowInterval = Convert.ToInt32(tbSlideShowDelay.Text);
 
+				//calendar
+				cfg.bCfgCalendarEnabled = (bool)cbCalendarEnabled.IsChecked;
+
 				//music
+				cfg.bCfgMusicEnabled = (bool)cbMusicEnabled.IsChecked;
 				cfg.sCfgMusicDir = strMusicDir = tbDefaultMusicDir.Text;
 				
 				cfg.sCfgRadio1Caption = strRadio1Caption = tbRadioBtn1Caption.Text;
@@ -1652,9 +1689,11 @@ namespace KitchenTouch
 				cfg.sCfgRadio4URL = strRadio4URL = tbRadioBtn4URL.Text;
 
 				//weather
+				cfg.bCfgWeatherEnabled = (bool)cbWeatherEnabled.IsChecked;
 				cfg.sCfgZipCode = strZipCode = tbZip.Text;
 				
 				//webcams
+				cfg.bCfgWebCamEnabled = (bool)cbCamerasEnabled.IsChecked;
 				cfg.iCfgWebCamInterval = iWebCamInterval = 10;
 
 				cfg.sCfgWebCam1Caption = strWebCam1Caption = tbWebCamBtn1Caption.Text;
@@ -1670,9 +1709,11 @@ namespace KitchenTouch
 				cfg.sCfgWebCam4URL = strWebCam4URL = tbWebCamBtn4URL.Text;
 				
 				//lights
+				cfg.bCfgAutomationEnabled = (bool)cbLightsEnabled.IsChecked;
 				cfg.sCfgAutomationURL = strAutomationURL = tbAutomationURL.Text;
 				
 				//internet
+				cfg.bCfgBrowserEnabled = (bool)cbBrowserEnabled.IsChecked;
 				cfg.sCfgWebSite1Caption = strWebSite1Caption = tbInternetBtn1Caption.Text;
 				cfg.sCfgWebSite1URL = strWebSite1URL = tbInternetBtn1URL.Text;
 
@@ -1805,6 +1846,37 @@ namespace KitchenTouch
 			fnDebugWrite(msg);
 			bEnableDebug = (bool)cb.IsChecked;
 		}
+		
+		private void cbCalendarEnabled_Click(object sender, RoutedEventArgs e)
+		{
+			boxSettingsCalendar.IsEnabled = (bool)cbCalendarEnabled.IsChecked;
+		}
+
+		private void cbWeatherEnabled_Click(object sender, RoutedEventArgs e)
+		{
+			boxSettingsWeather.IsEnabled = (bool)cbWeatherEnabled.IsChecked;
+		}
+
+		private void cbCamerasEnabled_Click(object sender, RoutedEventArgs e)
+		{
+			boxSettingsCameras.IsEnabled = (bool)cbCamerasEnabled.IsChecked;
+		}
+
+		private void cbLightsEnabled_Click(object sender, RoutedEventArgs e)
+		{
+			boxSettingsLights.IsEnabled = (bool)cbLightsEnabled.IsChecked;
+		}
+
+		private void cbBrowserEnabled_Click(object sender, RoutedEventArgs e)
+		{
+			boxSettingsBrowser.IsEnabled = (bool)cbBrowserEnabled.IsChecked;
+		}
+
+		private void cbMusicEnabled_Click(object sender, RoutedEventArgs e)
+		{
+			boxSettingsMusic.IsEnabled = (bool)cbMusicEnabled.IsChecked;
+		}
+		
 		#endregion
 
 		#region * KEYBOARD HANDLER *
