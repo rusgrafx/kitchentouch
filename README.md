@@ -33,9 +33,9 @@ I had limited time on my hands (around 2 weeks), but I really wanted to learn a 
 
 The screenshots are available on PicasaWeb...
 
-[v 0.1 Screenshots](http://picasaweb.google.com/ruslan.ulanov/KitchenTouchV1#)
+[v 0.1 Screenshots](http://bit.ly/ktv14cv)
 
-[v 1.0 Alpha Screenshots](http://picasaweb.google.com/ruslan.ulanov/KitchenTouchV2#)
+[v 1.0 Alpha Screenshots](http://bit.ly/ktv24cv)
 
 # System Requirements
 
